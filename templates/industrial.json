@@ -1,0 +1,99 @@
+{
+  "project_type": "industrial",
+  "description": "Industrial construction - warehouses, factories, workshops",
+  "levels": {
+    "default": ["Foundation", "Ground Floor", "Mezzanine", "Roof"],
+    "min": 1,
+    "max": 5,
+    "typical_height_m": 6.00
+  },
+  "families_to_load": {
+    "structural": [
+      "NGM_Column_Steel_W",
+      "NGM_Column_Steel_HSS",
+      "NGM_Column_Rectangular",
+      "NGM_Beam_Steel_W",
+      "NGM_Beam_Steel_Joist",
+      "NGM_Truss_Standard",
+      "NGM_Foundation_Pad",
+      "NGM_Foundation_Strip",
+      "NGM_Brace_Steel"
+    ],
+    "architectural": [
+      "NGM_Door_Single",
+      "NGM_Door_Double",
+      "NGM_Door_Rollup",
+      "NGM_Door_Overhead",
+      "NGM_Window_Industrial",
+      "NGM_Louver_Standard",
+      "NGM_Dock_Leveler"
+    ],
+    "mep": [
+      "NGM_Outlet_Industrial",
+      "NGM_Light_Highbay",
+      "NGM_Light_Ceiling",
+      "NGM_HVAC_Unit_Rooftop",
+      "NGM_HVAC_Exhaust_Fan",
+      "NGM_Fire_Sprinkler",
+      "NGM_Plumbing_Sink",
+      "NGM_Plumbing_Toilet"
+    ],
+    "annotations": [
+      "NGM_Titleblock_A1",
+      "NGM_Titleblock_A0",
+      "NGM_Tag_Room",
+      "NGM_Tag_Door",
+      "NGM_Tag_Level",
+      "NGM_Tag_Steel_Member"
+    ]
+  },
+  "wall_types": [
+    {"name": "Ext - Metal Panel + Insulation", "width_mm": 150, "structural": false},
+    {"name": "Ext - Precast Concrete Panel", "width_mm": 200, "structural": false},
+    {"name": "Ext - Tilt-up Concrete 20cm", "width_mm": 200, "structural": true},
+    {"name": "Ext - Block 20cm", "width_mm": 200, "structural": false},
+    {"name": "Int - Block 15cm", "width_mm": 150, "structural": false},
+    {"name": "Int - Drywall 12cm (offices)", "width_mm": 120, "structural": false},
+    {"name": "Firewall - Concrete 20cm", "width_mm": 200, "structural": true}
+  ],
+  "floor_types": [
+    {"name": "SOG - Concrete 15cm (standard)", "thickness_mm": 150},
+    {"name": "SOG - Concrete 20cm (heavy load)", "thickness_mm": 200},
+    {"name": "Foundation Mat 30cm", "thickness_mm": 300},
+    {"name": "Mezzanine Slab 15cm", "thickness_mm": 150}
+  ],
+  "views_to_create": [
+    {"name": "Floor Plan - {level}", "type": "floor_plan", "per_level": true},
+    {"name": "Roof Plan", "type": "floor_plan", "per_level": false},
+    {"name": "Section A-A (Longitudinal)", "type": "section"},
+    {"name": "Section B-B (Transversal)", "type": "section"},
+    {"name": "Elevation - North", "type": "elevation"},
+    {"name": "Elevation - South", "type": "elevation"},
+    {"name": "Elevation - East", "type": "elevation"},
+    {"name": "Elevation - West", "type": "elevation"},
+    {"name": "3D - Exterior", "type": "3d"},
+    {"name": "3D - Structure", "type": "3d"}
+  ],
+  "sheets_to_create": [
+    {"name": "G-001 Cover Sheet", "discipline": "general"},
+    {"name": "A-001 Site Plan", "discipline": "architectural"},
+    {"name": "A-100 Floor Plans", "discipline": "architectural"},
+    {"name": "A-200 Elevations", "discipline": "architectural"},
+    {"name": "A-300 Sections + Details", "discipline": "architectural"},
+    {"name": "S-100 Foundation Plan", "discipline": "structural"},
+    {"name": "S-200 Steel Framing Plans", "discipline": "structural"},
+    {"name": "S-300 Steel Details + Connections", "discipline": "structural"},
+    {"name": "M-100 HVAC Plans", "discipline": "mechanical"},
+    {"name": "E-100 Electrical + Lighting", "discipline": "electrical"},
+    {"name": "P-100 Plumbing Plans", "discipline": "plumbing"},
+    {"name": "FP-100 Fire Protection", "discipline": "fire_protection"}
+  ],
+  "shared_parameters": [
+    {"name": "NGM_Cost_Per_Unit", "type": "number", "group": "NGM Data"},
+    {"name": "NGM_Material_Code", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Supplier", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Concept_ID", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Fire_Rating", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Load_Rating_kg_m2", "type": "number", "group": "NGM Data"}
+  ]
+}

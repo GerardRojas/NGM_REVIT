@@ -1,0 +1,85 @@
+{
+  "project_type": "residential",
+  "description": "Residential construction - houses, apartments, condos",
+  "levels": {
+    "default": ["Foundation", "Ground Floor", "Upper Floor", "Roof"],
+    "min": 2,
+    "max": 10,
+    "typical_height_m": 2.80
+  },
+  "families_to_load": {
+    "structural": [
+      "NGM_Column_Rectangular",
+      "NGM_Column_Circular",
+      "NGM_Beam_Rectangular",
+      "NGM_Foundation_Strip",
+      "NGM_Foundation_Pad"
+    ],
+    "architectural": [
+      "NGM_Door_Single",
+      "NGM_Door_Double",
+      "NGM_Door_Sliding",
+      "NGM_Window_Fixed",
+      "NGM_Window_Sliding",
+      "NGM_Window_Casement",
+      "NGM_Stair_Standard"
+    ],
+    "mep": [
+      "NGM_Outlet_Standard",
+      "NGM_Switch_Single",
+      "NGM_Light_Ceiling",
+      "NGM_Plumbing_Sink",
+      "NGM_Plumbing_Toilet",
+      "NGM_Plumbing_Shower"
+    ],
+    "annotations": [
+      "NGM_Titleblock_A1",
+      "NGM_Tag_Room",
+      "NGM_Tag_Door",
+      "NGM_Tag_Window",
+      "NGM_Tag_Level"
+    ]
+  },
+  "wall_types": [
+    {"name": "Ext - Block 15cm + Plaster", "width_mm": 200, "structural": false},
+    {"name": "Ext - Block 20cm + Plaster", "width_mm": 250, "structural": false},
+    {"name": "Int - Block 10cm + Plaster", "width_mm": 150, "structural": false},
+    {"name": "Int - Block 15cm + Plaster", "width_mm": 200, "structural": false},
+    {"name": "Struct - Concrete 20cm", "width_mm": 200, "structural": true},
+    {"name": "Struct - Concrete 25cm", "width_mm": 250, "structural": true}
+  ],
+  "floor_types": [
+    {"name": "Slab - Concrete 12cm", "thickness_mm": 120},
+    {"name": "Slab - Concrete 15cm", "thickness_mm": 150},
+    {"name": "Foundation Slab 20cm", "thickness_mm": 200}
+  ],
+  "views_to_create": [
+    {"name": "Floor Plan - {level}", "type": "floor_plan", "per_level": true},
+    {"name": "Ceiling Plan - {level}", "type": "ceiling_plan", "per_level": true},
+    {"name": "Section A-A", "type": "section"},
+    {"name": "Section B-B", "type": "section"},
+    {"name": "Elevation - North", "type": "elevation"},
+    {"name": "Elevation - South", "type": "elevation"},
+    {"name": "Elevation - East", "type": "elevation"},
+    {"name": "Elevation - West", "type": "elevation"},
+    {"name": "3D - Exterior", "type": "3d"},
+    {"name": "3D - Interior", "type": "3d"}
+  ],
+  "sheets_to_create": [
+    {"name": "A-001 Site Plan", "discipline": "architectural"},
+    {"name": "A-100 Floor Plans", "discipline": "architectural"},
+    {"name": "A-200 Elevations", "discipline": "architectural"},
+    {"name": "A-300 Sections", "discipline": "architectural"},
+    {"name": "S-100 Foundation Plan", "discipline": "structural"},
+    {"name": "S-200 Structural Plans", "discipline": "structural"},
+    {"name": "S-300 Structural Details", "discipline": "structural"},
+    {"name": "E-100 Electrical Plans", "discipline": "electrical"},
+    {"name": "P-100 Plumbing Plans", "discipline": "plumbing"}
+  ],
+  "shared_parameters": [
+    {"name": "NGM_Cost_Per_Unit", "type": "number", "group": "NGM Data"},
+    {"name": "NGM_Material_Code", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Supplier", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Concept_ID", "type": "text", "group": "NGM Data"}
+  ]
+}

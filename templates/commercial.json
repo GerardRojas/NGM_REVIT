@@ -1,0 +1,105 @@
+{
+  "project_type": "commercial",
+  "description": "Commercial construction - offices, retail, mixed-use",
+  "levels": {
+    "default": ["Foundation", "Basement", "Ground Floor", "Level 2", "Level 3", "Roof"],
+    "min": 3,
+    "max": 30,
+    "typical_height_m": 3.50
+  },
+  "families_to_load": {
+    "structural": [
+      "NGM_Column_Rectangular",
+      "NGM_Column_Circular",
+      "NGM_Column_Steel_W",
+      "NGM_Beam_Rectangular",
+      "NGM_Beam_Steel_W",
+      "NGM_Foundation_Pad",
+      "NGM_Foundation_Pile"
+    ],
+    "architectural": [
+      "NGM_Door_Single",
+      "NGM_Door_Double",
+      "NGM_Door_Revolving",
+      "NGM_Door_Glass",
+      "NGM_CurtainWall_Panel",
+      "NGM_Window_Fixed_Commercial",
+      "NGM_Elevator_Standard",
+      "NGM_Stair_Commercial"
+    ],
+    "mep": [
+      "NGM_Outlet_Standard",
+      "NGM_Outlet_Floor",
+      "NGM_Switch_Single",
+      "NGM_Light_Ceiling_Commercial",
+      "NGM_Light_Recessed",
+      "NGM_HVAC_Diffuser",
+      "NGM_Fire_Sprinkler",
+      "NGM_Plumbing_Sink_Commercial",
+      "NGM_Plumbing_Toilet_Commercial"
+    ],
+    "annotations": [
+      "NGM_Titleblock_A1",
+      "NGM_Titleblock_A0",
+      "NGM_Tag_Room",
+      "NGM_Tag_Door",
+      "NGM_Tag_Window",
+      "NGM_Tag_Level",
+      "NGM_Tag_Parking"
+    ]
+  },
+  "wall_types": [
+    {"name": "Ext - Curtain Wall", "width_mm": 150, "structural": false},
+    {"name": "Ext - Precast Concrete Panel", "width_mm": 200, "structural": false},
+    {"name": "Ext - Block 20cm + Cladding", "width_mm": 300, "structural": false},
+    {"name": "Int - Drywall 12cm", "width_mm": 120, "structural": false},
+    {"name": "Int - Drywall 15cm", "width_mm": 150, "structural": false},
+    {"name": "Int - Block 15cm + Plaster", "width_mm": 200, "structural": false},
+    {"name": "Struct - Concrete 25cm", "width_mm": 250, "structural": true},
+    {"name": "Struct - Concrete 30cm", "width_mm": 300, "structural": true},
+    {"name": "Core - Concrete 20cm", "width_mm": 200, "structural": true}
+  ],
+  "floor_types": [
+    {"name": "Slab - Concrete 15cm", "thickness_mm": 150},
+    {"name": "Slab - Concrete 20cm", "thickness_mm": 200},
+    {"name": "Slab - Post-tensioned 25cm", "thickness_mm": 250},
+    {"name": "Foundation Mat 40cm", "thickness_mm": 400}
+  ],
+  "views_to_create": [
+    {"name": "Floor Plan - {level}", "type": "floor_plan", "per_level": true},
+    {"name": "Ceiling Plan - {level}", "type": "ceiling_plan", "per_level": true},
+    {"name": "Section A-A", "type": "section"},
+    {"name": "Section B-B", "type": "section"},
+    {"name": "Section C-C", "type": "section"},
+    {"name": "Elevation - North", "type": "elevation"},
+    {"name": "Elevation - South", "type": "elevation"},
+    {"name": "Elevation - East", "type": "elevation"},
+    {"name": "Elevation - West", "type": "elevation"},
+    {"name": "3D - Exterior", "type": "3d"},
+    {"name": "3D - Core Detail", "type": "3d"}
+  ],
+  "sheets_to_create": [
+    {"name": "G-001 Cover Sheet", "discipline": "general"},
+    {"name": "A-001 Site Plan", "discipline": "architectural"},
+    {"name": "A-100 Floor Plans", "discipline": "architectural"},
+    {"name": "A-200 Elevations", "discipline": "architectural"},
+    {"name": "A-300 Sections", "discipline": "architectural"},
+    {"name": "A-400 Wall Sections", "discipline": "architectural"},
+    {"name": "A-500 Details", "discipline": "architectural"},
+    {"name": "S-100 Foundation Plan", "discipline": "structural"},
+    {"name": "S-200 Structural Plans", "discipline": "structural"},
+    {"name": "S-300 Structural Details", "discipline": "structural"},
+    {"name": "M-100 HVAC Plans", "discipline": "mechanical"},
+    {"name": "E-100 Electrical Plans", "discipline": "electrical"},
+    {"name": "E-200 Lighting Plans", "discipline": "electrical"},
+    {"name": "P-100 Plumbing Plans", "discipline": "plumbing"},
+    {"name": "FP-100 Fire Protection", "discipline": "fire_protection"}
+  ],
+  "shared_parameters": [
+    {"name": "NGM_Cost_Per_Unit", "type": "number", "group": "NGM Data"},
+    {"name": "NGM_Material_Code", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Supplier", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Concept_ID", "type": "text", "group": "NGM Data"},
+    {"name": "NGM_Fire_Rating", "type": "text", "group": "NGM Data"}
+  ]
+}

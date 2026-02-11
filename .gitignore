@@ -1,0 +1,17 @@
+# Revit temp files
+*.tmp
+*.bak
+*.log
+*_backup*.rvt
+
+# Export outputs (generated, not tracked)
+exports/*.json
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
