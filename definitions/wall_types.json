@@ -1,0 +1,99 @@
+{
+  "_description": "Definiciones de tipos de muro NGM. Cada entrada se traduce a un WallType en Revit via CompoundStructure. El Build Engine duplica el tipo base generico y aplica estas capas.",
+  "_base_type": "Generic - 200mm",
+  "wall_types": [
+    {
+      "name": "Ext - Block 15cm + Plaster",
+      "function": "exterior",
+      "structural": false,
+      "total_width_mm": 200,
+      "layers": [
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 150},
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+      ]
+    },
+    {
+      "name": "Ext - Block 20cm + Plaster",
+      "function": "exterior",
+      "structural": false,
+      "total_width_mm": 250,
+      "layers": [
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
+        {"function": "substrate", "material": "Concrete Masonry Units - 20cm", "width_mm": 200},
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+      ]
+    },
+    {
+      "name": "Int - Block 10cm + Plaster",
+      "function": "interior",
+      "structural": false,
+      "total_width_mm": 150,
+      "layers": [
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 100},
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+      ]
+    },
+    {
+      "name": "Int - Block 15cm + Plaster",
+      "function": "interior",
+      "structural": false,
+      "total_width_mm": 200,
+      "layers": [
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 150},
+        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+      ]
+    },
+    {
+      "name": "Int - Drywall 12cm",
+      "function": "interior",
+      "structural": false,
+      "total_width_mm": 120,
+      "layers": [
+        {"function": "finish", "material": "Gypsum Wall Board", "width_mm": 15},
+        {"function": "substrate", "material": "Metal Stud", "width_mm": 90},
+        {"function": "finish", "material": "Gypsum Wall Board", "width_mm": 15}
+      ]
+    },
+    {
+      "name": "Struct - Concrete 20cm",
+      "function": "structural",
+      "structural": true,
+      "total_width_mm": 200,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+      ]
+    },
+    {
+      "name": "Struct - Concrete 25cm",
+      "function": "structural",
+      "structural": true,
+      "total_width_mm": 250,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 250}
+      ]
+    },
+    {
+      "name": "Struct - Concrete 30cm",
+      "function": "structural",
+      "structural": true,
+      "total_width_mm": 300,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 300}
+      ]
+    },
+    {
+      "name": "Ext - Metal Panel + Insulation",
+      "function": "exterior",
+      "structural": false,
+      "total_width_mm": 150,
+      "layers": [
+        {"function": "finish", "material": "Metal Panel - Insulated", "width_mm": 50},
+        {"function": "thermal", "material": "Insulation - Rigid", "width_mm": 50},
+        {"function": "substrate", "material": "Metal Panel - Insulated", "width_mm": 50}
+      ]
+    }
+  ]
+}

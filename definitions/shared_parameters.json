@@ -1,0 +1,41 @@
+{
+  "_description": "Shared parameters NGM. Se crean automaticamente en el proyecto y se vinculan a categorias. Permiten embeber datos del estimador directamente en elementos Revit.",
+  "parameter_group": "NGM Data",
+  "parameters": [
+    {
+      "name": "NGM_Cost_Per_Unit",
+      "type": "number",
+      "categories": ["OST_Walls", "OST_Floors", "OST_Roofs", "OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation", "OST_Doors", "OST_Windows"],
+      "instance": true,
+      "description": "Costo unitario del elemento (synced from NGM estimator)"
+    },
+    {
+      "name": "NGM_Material_Code",
+      "type": "text",
+      "categories": ["OST_Walls", "OST_Floors", "OST_Roofs", "OST_StructuralColumns", "OST_StructuralFraming"],
+      "instance": false,
+      "description": "Codigo de material en catalogo NGM (ej: CONC-001)"
+    },
+    {
+      "name": "NGM_Concept_ID",
+      "type": "text",
+      "categories": ["OST_Walls", "OST_Floors", "OST_Roofs", "OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation", "OST_Doors", "OST_Windows"],
+      "instance": false,
+      "description": "UUID del concepto en el estimador NGM"
+    },
+    {
+      "name": "NGM_Supplier",
+      "type": "text",
+      "categories": ["OST_Doors", "OST_Windows", "OST_PlumbingFixtures", "OST_LightingFixtures"],
+      "instance": false,
+      "description": "Proveedor asignado en NGM"
+    },
+    {
+      "name": "NGM_Unit",
+      "type": "text",
+      "categories": ["OST_Walls", "OST_Floors", "OST_Roofs", "OST_StructuralColumns", "OST_StructuralFraming"],
+      "instance": false,
+      "description": "Unidad de medida NGM (m2, m3, ml, pza, kg)"
+    }
+  ]
+}

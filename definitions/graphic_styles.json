@@ -1,0 +1,65 @@
+{
+  "_description": "Estilos graficos NGM. Line weights, colores, patrones. Aplicados por Build Engine como graphic overrides y object styles.",
+  "line_weights": {
+    "cut": {
+      "walls_exterior": 5,
+      "walls_interior": 3,
+      "walls_structural": 6,
+      "floors": 4,
+      "columns": 5,
+      "beams": 4,
+      "doors": 2,
+      "windows": 2
+    },
+    "projection": {
+      "walls": 2,
+      "floors": 1,
+      "columns": 3,
+      "furniture": 1,
+      "annotations": 1
+    }
+  },
+  "colors": {
+    "structural_concrete": [180, 180, 180],
+    "masonry": [210, 180, 140],
+    "steel": [100, 100, 200],
+    "wood": [200, 160, 100],
+    "glass": [180, 220, 240],
+    "insulation": [255, 255, 200],
+    "earth": [160, 130, 90],
+    "waterproofing": [100, 150, 200]
+  },
+  "fill_patterns": {
+    "concrete": "Concrete",
+    "masonry": "Masonry - Running Bond",
+    "steel": "Steel",
+    "earth": "Earth",
+    "insulation": "Insulation",
+    "gypsum": "Gypsum"
+  },
+  "filters": [
+    {
+      "name": "NGM - Exterior Walls",
+      "rule": "Wall Function equals Exterior",
+      "override": {
+        "cut_line_weight": 5,
+        "cut_line_color": [0, 0, 0]
+      }
+    },
+    {
+      "name": "NGM - Structural Elements",
+      "categories": ["OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation"],
+      "override": {
+        "cut_fill_color": [180, 180, 180],
+        "cut_line_weight": 5
+      }
+    },
+    {
+      "name": "NGM - Non-structural Halftone",
+      "categories": ["OST_Furniture", "OST_Casework", "OST_Planting"],
+      "override": {
+        "halftone": true
+      }
+    }
+  ]
+}

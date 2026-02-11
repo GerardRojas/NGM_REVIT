@@ -1,0 +1,73 @@
+{
+  "_description": "Definiciones de tipos de piso/losa NGM.",
+  "_base_type": "Generic Floor - 200mm",
+  "floor_types": [
+    {
+      "name": "Slab - Concrete 12cm",
+      "structural": true,
+      "total_thickness_mm": 120,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 120}
+      ]
+    },
+    {
+      "name": "Slab - Concrete 15cm",
+      "structural": true,
+      "total_thickness_mm": 150,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 150}
+      ]
+    },
+    {
+      "name": "Slab - Concrete 20cm",
+      "structural": true,
+      "total_thickness_mm": 200,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+      ]
+    },
+    {
+      "name": "Foundation Slab 20cm",
+      "structural": true,
+      "total_thickness_mm": 200,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+      ]
+    },
+    {
+      "name": "Foundation Mat 40cm",
+      "structural": true,
+      "total_thickness_mm": 400,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 400}
+      ]
+    },
+    {
+      "name": "SOG - Concrete 15cm",
+      "structural": true,
+      "total_thickness_mm": 150,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 150}
+      ]
+    },
+    {
+      "name": "Slab + Ceramic Tile",
+      "structural": true,
+      "total_thickness_mm": 135,
+      "layers": [
+        {"function": "finish", "material": "Ceramic Tile", "width_mm": 10},
+        {"function": "substrate", "material": "Mortar Bed", "width_mm": 5},
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 120}
+      ]
+    },
+    {
+      "name": "Losacero",
+      "structural": true,
+      "total_thickness_mm": 130,
+      "layers": [
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 80},
+        {"function": "structure", "material": "Metal Deck", "width_mm": 50}
+      ]
+    }
+  ]
+}

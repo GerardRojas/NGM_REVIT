@@ -1,0 +1,81 @@
+{
+  "_description": "Nomenclatura estandar NGM. Aplicada automaticamente por Build Engine y Drawing Package.",
+  "levels": {
+    "pattern": "{prefix} - {name}",
+    "prefix_by_type": {
+      "foundation": "FDN",
+      "basement": "BSM",
+      "ground": "GF",
+      "upper": "L{n}",
+      "roof": "RF",
+      "mezzanine": "MZ"
+    },
+    "examples": ["FDN - Foundation", "GF - Ground Floor", "L2 - Upper Floor", "RF - Roof"]
+  },
+  "grids": {
+    "horizontal": "Letters (A, B, C...)",
+    "vertical": "Numbers (1, 2, 3...)",
+    "diagonal": "Letters with prime (A', B'...)"
+  },
+  "views": {
+    "floor_plan": "{discipline}-{level_code} {level_name}",
+    "ceiling_plan": "{discipline}-RCP-{level_code} {level_name}",
+    "section": "{discipline}-SEC-{id} {description}",
+    "elevation": "{discipline}-ELV-{direction}",
+    "3d": "3D-{description}",
+    "detail": "{discipline}-DET-{id} {description}",
+    "discipline_codes": {
+      "architectural": "A",
+      "structural": "S",
+      "electrical": "E",
+      "mechanical": "M",
+      "plumbing": "P"
+    },
+    "examples": [
+      "A-GF Ground Floor",
+      "A-RCP-GF Ground Floor",
+      "S-SEC-01 Longitudinal Section",
+      "A-ELV-North",
+      "3D-Exterior"
+    ]
+  },
+  "sheets": {
+    "pattern": "{discipline}{number} - {title}",
+    "numbering": {
+      "general": "G-0xx",
+      "architectural": "A-{series}xx",
+      "structural": "S-{series}xx",
+      "mechanical": "M-{series}xx",
+      "electrical": "E-{series}xx",
+      "plumbing": "P-{series}xx",
+      "fire_protection": "FP-{series}xx"
+    },
+    "series": {
+      "001": "Cover / Index",
+      "1xx": "Plans",
+      "2xx": "Elevations",
+      "3xx": "Sections",
+      "4xx": "Wall Sections / Enlarged Plans",
+      "5xx": "Details",
+      "6xx": "Schedules"
+    }
+  },
+  "families": {
+    "pattern": "NGM_{category}_{description}",
+    "examples": [
+      "NGM_Door_Single",
+      "NGM_Window_Sliding",
+      "NGM_Column_Rectangular",
+      "NGM_Beam_Steel_W",
+      "NGM_Titleblock_A1"
+    ]
+  },
+  "types": {
+    "walls": "{function} - {material} {width}",
+    "floors": "{name} {thickness}",
+    "columns": "{width}x{depth}cm",
+    "beams": "{width}x{depth}cm",
+    "doors": "{width}x{height}m",
+    "windows": "{width}x{height}m"
+  }
+}

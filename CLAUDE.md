@@ -1,143 +1,274 @@
 # NGM Revit Suite
 
-## Vision
-Suite integral de automatizacion BIM para NGM. El objetivo es crear un ecosistema completo que integre Revit con el sistema NGM HUB para automatizar al extremo los procesos de estimacion, modelado y organizacion de proyectos de construccion.
+## Filosofia: BIM as Code
 
-**Problema actual**: Un archivo template de Revit de 200MB que se copia para cada proyecto. Pesado, lento de compartir, lleno de familias y materiales que no siempre aplican.
+Todo el flujo de trabajo de modelado, templates, familias, estilos, vistas y entregables vive en **codigo y JSON en GitHub**, no dentro de un archivo .rvt de 200MB imposible de navegar y compartir.
 
-**Solucion**: Reemplazar el template monolitico con un sistema inteligente que construya el archivo de proyecto on-demand segun el tipo de proyecto, cargando solo lo necesario. Integrar IA, OCR, Vision y scripts que conviertan semanas de trabajo manual en horas.
+El archivo Revit es solo un runtime - un blank canvas. Toda la inteligencia (que muros usar, que familias cargar, como nombrar vistas, que sheets crear, que estilos graficos aplicar) esta definida en archivos legibles, versionados y compartibles.
 
-## Pilares del Ecosistema
+```
+ANTES: Template 200MB → copiar → rezar que funcione → imposible de actualizar
+AHORA: base.rvt 3MB + codigo en GitHub → build → modelo consistente siempre
+```
 
-### 1. Template Builder (Generador de Proyectos)
-- Script que genera un .rvt limpio basado en el tipo de proyecto
-- Input: tipo (residencial, comercial, industrial, etc.), niveles, uso
-- Output: archivo Revit con solo las familias, materiales, vistas y sheets relevantes
-- Reemplaza el template de 200MB con un generador de ~5MB + librerias modulares
+**Ventajas:**
+- Un dev nuevo clona el repo y tiene todo el estandar de la empresa
+- Cambiar un tipo de muro es editar un JSON, no buscar en el template
+- Git diff muestra exactamente que cambio entre versiones
+- Compartir es un `git pull`, no un archivo de 200MB por WeTransfer
+- Cada proyecto carga solo lo que necesita, no todo el catalogo
 
-### 2. Family Manager (Gestor de Familias)
-- Libreria organizada de familias Revit (.rfa) por categoria y uso
-- Catalogo versionado y sincronizado con la base de datos de materiales NGM
-- Auto-carga de familias segun tipo de proyecto
-- Mapping: familia Revit <-> material/concepto del estimador NGM
+## Arquitectura General
 
-### 3. Material Database (Base de Datos de Materiales)
-- Materiales Revit vinculados 1:1 con el catalogo de materiales del estimador NGM
-- Precios, proveedores y rendimientos embebidos como shared parameters
-- Sincronizacion bidireccional: Revit <-> NGM API
+```
+┌─────────────────────────────────────────────────────────┐
+│  NGM HUB WEB (Browser)                                  │
+│                                                         │
+│  OCR Tool ──> Plan Configurator ──> Build Manifest JSON │
+│  (extrae       (ajusta vectores,     (contrato entre    │
+│   geometria     fixtures, tipos)      web y Revit)      │
+│   de planos)                                            │
+└──────────────────────┬──────────────────────────────────┘
+                       │ JSON file o API
+                       v
+┌─────────────────────────────────────────────────────────┐
+│  pyRevit Build Engine (dentro de Revit)                  │
+│                                                         │
+│  Lee manifest ──> Crea niveles, grids                    │
+│               ──> Carga familias del vault               │
+│               ──> Define tipos de muro/piso desde code   │
+│               ──> Traza muros por vectores               │
+│               ──> Inserta fixtures en puntos             │
+│               ──> Crea vistas, sheets, estilos           │
+│               ──> SaveAs proyecto.rvt                    │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       v
+┌─────────────────────────────────────────────────────────┐
+│  Export Suite                                            │
+│                                                         │
+│  Modelo ──> JSON cantidades ──> NGM API ──> Estimador    │
+└─────────────────────────────────────────────────────────┘
+```
 
-### 4. Export Suite (Extraccion de Datos)
-- Exportar materiales, cantidades, espacios del modelo a JSON
-- Alimentar el estimador de NGM con cantidades reales del BIM
-- Eliminar cuantificacion manual
+## Que vive en codigo (este repo) vs que vive en Revit
 
-### 5. Drawing Package Automation (Paquete de Planos)
-- Generacion automatica de sheets segun tipo de proyecto
-- Titleblock estandarizado NGM
-- Export a PDF organizado por disciplina
-- Nomenclatura estandar de vistas y planos
+| En GitHub (este repo) | En Revit (.rvt) |
+|---|---|
+| Definiciones de tipos de muro (capas, materiales, grosores) | Instancias de muros colocados |
+| Catalogo de familias (.rfa en vault) | Familias ya cargadas en el proyecto |
+| Configs de vistas (escala, view template, filtros) | Las vistas renderizadas |
+| Layouts de sheets (que vista va donde) | Los sheets armados |
+| Estilos graficos (colores, line weights, patterns) | Los overrides aplicados |
+| Nomenclatura y numeracion | Los nombres asignados |
+| Build manifest (vectores, puntos, fixtures) | La geometria construida |
+| Material map (Revit name <-> NGM code) | Los materiales asignados |
 
-### 6. AI Agents Integration (Agentes IA)
-- Conexion con agentes existentes de NGM (Andrew, Daneel, Arturito)
-- Andrew: Validacion de recibos/facturas contra cantidades del modelo
-- Daneel: Auto-autorizacion de gastos cruzando con presupuesto BIM
-- Nuevo agente BIM: Revision automatica de modelo (clash detection, QA/QC)
-- OCR/Vision: Leer planos escaneados, extraer datos, comparar con modelo
-
-### 7. Workflow Helpers (Herramientas de Productividad)
-- Scripts para tareas repetitivas del dia a dia del modelador
-- Renombrado masivo de vistas, limpieza de modelo, purge automatico
-- Estandarizacion de parametros y nomenclatura NGM
-- Reportes de avance de modelado
-
-## Contexto del Ecosistema NGM
-Este proyecto es parte del ecosistema NGM:
-- **NGM HUB WEB** (`C:\Users\germa\Desktop\NGM HUB WEB`) - Frontend web (HTML/CSS/JS vanilla)
+## Ecosistema NGM
+- **NGM HUB WEB** (`C:\Users\germa\Desktop\NGM HUB WEB`) - Frontend web
 - **NGM_API** (`C:\Users\germa\Desktop\NGM_API`) - Backend FastAPI + Supabase
-- **NGM_REVIT** (este repo) - Suite de automatizacion BIM
+- **NGM_REVIT** (este repo) - BIM as Code
 
-Flujo completo:
-```
-Template Builder genera .rvt limpio
-        |
-Modelador trabaja con familias/materiales estandarizados
-        |
-Export Suite extrae cantidades del modelo
-        |
-NGM API recibe JSON -> pre-popula estimador
-        |
-AI Agents validan gastos contra presupuesto BIM
-        |
-Drawing Package genera entregables automaticamente
-```
-
-## Stack y Entorno
+## Stack
 - **pyRevit** - Framework que carga scripts Python dentro de Revit
-- **IronPython 2.7** - El interprete que usa pyRevit (NO es CPython, NO tiene pip)
+- **IronPython 2.7** - Interprete de pyRevit (NO es CPython, NO tiene pip)
 - **Revit API** - Accesible via `clr` y namespaces de Autodesk (.NET)
-- **.NET interop** - Para HTTP requests usar `System.Net.WebClient`, NO `requests`
+- **.NET interop** - HTTP via `System.Net.WebClient` (no `requests`)
 - **Revit 2024+** - Version minima target
 
 ## Estructura del Proyecto
 ```
 NGM_REVIT/
-  CLAUDE.md                          # Este archivo - vision y reglas
-  exports/                           # JSONs generados por Export Suite
+  CLAUDE.md
 
-  # -- Librerias de contenido --
-  families/                          # Familias Revit organizadas
-    structural/                      # Columnas, vigas, cimentacion
-    architectural/                   # Puertas, ventanas, mobiliario
-    mep/                             # Instalaciones
-    annotations/                     # Etiquetas, titleblocks
-  materials/                         # Definiciones de materiales
-    material_map.json                # Mapeo material Revit <-> NGM catalogo
-  templates/                         # Configs por tipo de proyecto
-    residential.json                 # Que familias/vistas/sheets cargar
+  # ── Definiciones (la inteligencia del template, en codigo) ──
+  definitions/
+    wall_types.json          # Todos los tipos de muro: capas, materiales, grosores
+    floor_types.json         # Tipos de losa/piso
+    roof_types.json          # Tipos de techo
+    view_templates.json      # Configs de vistas: escala, filtros, overrides
+    sheet_layouts.json       # Layouts de sheets: titleblock, que vistas, posiciones
+    graphic_styles.json      # Line weights, colors, patterns, filters
+    naming_conventions.json  # Nomenclatura estandar NGM para todo
+    shared_parameters.json   # Parametros compartidos NGM
+
+  # ── Configs por tipo de proyecto ──
+  templates/
+    residential.json         # Que cargar para proyecto residencial
     commercial.json
     industrial.json
 
-  # -- Extension pyRevit --
+  # ── Vault de familias ──
+  families/
+    structural/              # .rfa: columnas, vigas, cimentacion
+    architectural/           # .rfa: puertas, ventanas, mobiliario
+    mep/                     # .rfa: instalaciones
+    annotations/             # .rfa: etiquetas, titleblocks, tags
+    specialty/               # .rfa: fixtures especificos por tipo de proyecto
+
+  # ── Mapeo de materiales ──
+  materials/
+    material_map.json        # Revit material <-> NGM catalogo
+
+  # ── Build manifests (generados por web o manuales) ──
+  manifests/
+    _schema.json             # Schema del build manifest
+    examples/                # Manifests de ejemplo para testing
+
+  # ── Archivos base de Revit (minimos) ──
+  base/
+    base.rvt                 # Archivo blank (~3MB), solo unidades metricas
+
+  # ── Salida ──
+  exports/                   # JSONs generados por Export Suite
+
+  # ── Extension pyRevit ──
   NGM.extension/
     NGM.tab/
-      Proyecto.panel/                # Setup y config de proyecto
-        TemplateBuilder.pushbutton/
-          script.py                  # Genera proyecto desde config
-        SyncMaterials.pushbutton/
-          script.py                  # Sincroniza materiales con NGM
-      Exportar.panel/                # Extraccion de datos
+      Build.panel/                    # Construir modelo desde manifest
+        BuildFromManifest.pushbutton/
+          script.py                   # Lee manifest -> construye modelo completo
+        LoadDefinitions.pushbutton/
+          script.py                   # Aplica definitions al doc activo
+      Exportar.panel/                 # Extraccion de datos
         ExportarMateriales.pushbutton/
           script.py
         ExportarCantidades.pushbutton/
           script.py
         ExportarEspacios.pushbutton/
           script.py
-      Planos.panel/                  # Drawing package
+      Planos.panel/                   # Drawing package
         GenerarSheets.pushbutton/
           script.py
         ExportPDF.pushbutton/
           script.py
-      Herramientas.panel/            # Helpers del dia a dia
+      Herramientas.panel/             # Helpers
         PurgeModel.pushbutton/
           script.py
         RenameViews.pushbutton/
           script.py
         ModelQA.pushbutton/
           script.py
+      Sync.panel/                     # Comunicacion con NGM API
+        SyncMaterials.pushbutton/
+          script.py
+        PushToEstimator.pushbutton/
+          script.py
 ```
 
-## Como instalar
-1. Instalar pyRevit: https://github.com/pyrevitlabs/pyRevit/releases
-2. En Revit -> pyRevit tab -> Settings -> Custom Extension Directories
-3. Agregar la ruta a `C:\Users\germa\Desktop\NGM_REVIT`
-4. Reload pyRevit (o reiniciar Revit)
-5. Aparece tab "NGM" en el ribbon con los paneles
+## Build Manifest Schema
+
+El build manifest es el contrato central entre la web (o edicion manual) y pyRevit.
+Schema completo en `manifests/_schema.json`. Estructura:
+
+```json
+{
+  "meta": {
+    "project_name": "Casa Robles 45",
+    "project_type": "residential",
+    "created_by": "ocr_tool | web_configurator | manual",
+    "version": "1.0"
+  },
+  "levels": [
+    {"name": "Foundation", "elevation_m": -0.60},
+    {"name": "Ground Floor", "elevation_m": 0.00},
+    {"name": "Upper Floor", "elevation_m": 2.80}
+  ],
+  "grids": [
+    {"name": "A", "start": [0, 0], "end": [0, 15]},
+    {"name": "1", "start": [0, 0], "end": [20, 0]}
+  ],
+  "walls": [
+    {
+      "type": "Ext - Block 15cm + Plaster",
+      "level": "Ground Floor",
+      "start": [0, 0],
+      "end": [10, 0],
+      "height_m": 2.80,
+      "structural": false
+    }
+  ],
+  "fixtures": [
+    {
+      "family": "NGM_Door_Single",
+      "type": "0.90x2.10",
+      "point": [3.5, 0, 0],
+      "level": "Ground Floor",
+      "host_wall_index": 0,
+      "rotation_deg": 0
+    }
+  ],
+  "floors": [
+    {
+      "type": "Slab - Concrete 12cm",
+      "level": "Ground Floor",
+      "boundary": [[0,0], [10,0], [10,8], [0,8]]
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Living Room",
+      "number": "01",
+      "point": [5, 4],
+      "level": "Ground Floor",
+      "floor_finish": "Ceramic Tile",
+      "wall_finish": "Plaster + Paint",
+      "ceiling_finish": "Plaster + Paint"
+    }
+  ],
+  "columns": [
+    {
+      "family": "NGM_Column_Rectangular",
+      "type": "30x30cm",
+      "point": [0, 0],
+      "base_level": "Foundation",
+      "top_level": "Upper Floor"
+    }
+  ],
+  "beams": [
+    {
+      "family": "NGM_Beam_Rectangular",
+      "type": "20x40cm",
+      "start": [0, 0, 2.80],
+      "end": [10, 0, 2.80],
+      "level": "Upper Floor"
+    }
+  ],
+  "views": "use_template_defaults",
+  "sheets": "use_template_defaults"
+}
+```
+
+`views` y `sheets` pueden ser `"use_template_defaults"` (usa lo definido en `templates/residential.json`) o un array explicito de vistas/sheets custom.
+
+## Revit API - Capacidades Clave
+
+### Lo que SI se puede via codigo
+- **Crear tipos de muro**: duplicar tipo base, modificar CompoundStructure (capas, materiales, grosores)
+- **Trazar muros por vector**: `Wall.Create(doc, Line, wallTypeId, levelId, height, offset, flip, structural)`
+- **Insertar familia en punto**: `doc.Create.NewFamilyInstance(XYZ, FamilySymbol, Level, StructuralType)`
+- **Familia line-based por vector**: `doc.Create.NewFamilyInstance(Line, FamilySymbol, Level, StructuralType)` - se adapta a la longitud
+- **Cargar familia desde disco**: `doc.LoadFamily(path)` - lee .rfa del vault
+- **Crear piso por boundary**: `doc.Create.NewFloor(CurveArray, FloorType, Level, structural)`
+- **Crear vistas**: `ViewPlan.Create()`, `ViewSection.CreateSection()`, `View3D.CreateIsometric()`
+- **Crear sheets**: `ViewSheet.Create(doc, titleblockId)` + `Viewport.Create()` para colocar vistas
+- **Graphic overrides**: `OverrideGraphicSettings` - colores, patrones, line weights por elemento o filtro
+- **View templates**: duplicar vista, configurar como template, aplicar a otras vistas
+- **Niveles y grids**: `Level.Create()`, `Grid.Create()`
+- **Shared parameters**: `doc.ParameterBindings`, `DefinitionFile`
+- **HTTP a NGM API**: `System.Net.WebClient` para sync bidireccional
+
+### Lo que NO se puede
+- Crear archivos .rvt o .rfa desde cero (necesita un base.rvt minimo abierto)
+- OCR/Vision (se hace externo, resultado llega como JSON)
+- Multi-threading real (IronPython limitacion)
+- Operaciones de 10k+ elementos pueden congelar UI (usar progress bar + TransactionGroup)
 
 ## Reglas de Codigo
 
 ### Scripts pyRevit (IronPython 2.7)
 - Cada script en su carpeta `.pushbutton/` con nombre `script.py`
-- Imports de Revit API siempre al inicio:
+- Imports de Revit API al inicio:
   ```python
   import clr
   clr.AddReference('RevitAPI')
@@ -147,18 +278,16 @@ NGM_REVIT/
   ```
 - `doc = revit.doc` para documento activo
 - `output = script.get_output()` para consola pyRevit
-- Transacciones: `with revit.Transaction('nombre'):` o `DB.Transaction(doc, 'nombre')`
-- Archivos de salida van a `exports/` con nombre descriptivo + timestamp
-- Formato de salida: JSON (compatible con NGM API)
+- Transacciones: `with revit.Transaction('nombre'):`
 
 ### Restricciones IronPython 2.7
 - NO f-strings -> usar `.format()` o `%`
 - NO pathlib -> usar `os.path`
 - NO `json.dumps(ensure_ascii=False)` con caracteres especiales
 - NO `with open()` sin encoding -> siempre `codecs.open(path, 'w', 'utf-8')`
-- NO tiene: dataclasses, type hints, async/await, pip
-- SI tiene: os, sys, json, codecs, datetime, collections, math
-- HTTP: `System.Net.WebClient` via clr (no requests)
+- NO tiene: dataclasses, type hints, async/await, pip, numpy, PIL
+- SI tiene: os, sys, json, codecs, datetime, collections, math, re
+- HTTP: `System.Net.WebClient` via clr
 
 ### Formato JSON de Exportacion
 ```json
@@ -178,7 +307,6 @@ NGM_REVIT/
 - Revit `Family + Type` -> NGM concepto name
 - Revit `Material` -> NGM material (via material_map.json)
 - Revit area/volume/count -> NGM cantidad
-- Unidades: m2, m3, ml, pza, kg
 
 ## Categorias Revit Relevantes
 - `OST_Walls` - Muros
@@ -200,10 +328,19 @@ NGM_REVIT/
 - Prod: `https://ngm-fastapi.onrender.com`
 - Staging: `https://ngm-api-staging.onrender.com`
 
-## Roadmap de Implementacion
-1. **Fase 1 - Export Suite** (ACTUAL): Scripts de extraccion de datos
-2. **Fase 2 - Template Builder**: Generador de proyectos por tipo
-3. **Fase 3 - Family/Material Manager**: Librerias organizadas + sync
-4. **Fase 4 - Drawing Package**: Automatizacion de planos
-5. **Fase 5 - AI Integration**: Conexion con agentes NGM
-6. **Fase 6 - Workflow Helpers**: Herramientas de productividad
+## Como Instalar
+1. Instalar pyRevit: https://github.com/pyrevitlabs/pyRevit/releases
+2. Clonar este repo: `git clone https://github.com/GerardRojas/NGM_REVIT.git`
+3. En Revit -> pyRevit -> Settings -> Custom Extension Directories
+4. Agregar ruta al repo clonado
+5. Reload pyRevit -> aparece tab "NGM"
+6. Para actualizar: `git pull` y reload pyRevit
+
+## Roadmap
+1. **Fase 1 - Export Suite**: Extraccion de datos del modelo (HECHO)
+2. **Fase 2 - Definitions**: Wall types, floor types, view templates, styles en JSON
+3. **Fase 3 - Build Engine**: Script que lee manifest y construye modelo
+4. **Fase 4 - Vault**: Libreria de familias estandarizadas
+5. **Fase 5 - Drawing Package**: Sheets, views, PDF export automatizado
+6. **Fase 6 - Web Integration**: OCR tool + Plan Configurator en NGM HUB
+7. **Fase 7 - AI Agents**: Conexion con Andrew/Daneel para validacion BIM-vs-gastos

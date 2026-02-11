@@ -1,0 +1,64 @@
+{
+  "_description": "Definiciones de view templates NGM. El Build Engine crea estas configs como View Templates en Revit.",
+  "view_templates": [
+    {
+      "name": "NGM - Architectural Plan",
+      "view_family": "floor_plan",
+      "scale": 100,
+      "detail_level": "medium",
+      "discipline": "architectural",
+      "category_visibility": {
+        "hide": ["OST_StructuralFraming", "OST_Rebar", "OST_MechanicalEquipment", "OST_PipeSegments", "OST_DuctSystem"],
+        "halftone": ["OST_StructuralColumns"]
+      },
+      "filters": []
+    },
+    {
+      "name": "NGM - Structural Plan",
+      "view_family": "floor_plan",
+      "scale": 50,
+      "detail_level": "fine",
+      "discipline": "structural",
+      "category_visibility": {
+        "hide": ["OST_Furniture", "OST_Casework", "OST_PlumbingFixtures"],
+        "halftone": ["OST_Walls"]
+      },
+      "filters": [
+        {
+          "name": "Structural Elements",
+          "categories": ["OST_StructuralColumns", "OST_StructuralFraming", "OST_StructuralFoundation"],
+          "override": {"projection_line_weight": 5, "projection_line_color": [0, 0, 0]}
+        }
+      ]
+    },
+    {
+      "name": "NGM - Ceiling Plan",
+      "view_family": "ceiling_plan",
+      "scale": 100,
+      "detail_level": "medium",
+      "discipline": "architectural",
+      "category_visibility": {
+        "hide": ["OST_StructuralFraming", "OST_Rebar", "OST_Furniture"]
+      },
+      "filters": []
+    },
+    {
+      "name": "NGM - Section",
+      "view_family": "section",
+      "scale": 50,
+      "detail_level": "fine",
+      "discipline": "architectural",
+      "category_visibility": {},
+      "filters": []
+    },
+    {
+      "name": "NGM - Elevation",
+      "view_family": "elevation",
+      "scale": 100,
+      "detail_level": "medium",
+      "discipline": "architectural",
+      "category_visibility": {},
+      "filters": []
+    }
+  ]
+}

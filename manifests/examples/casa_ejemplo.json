@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "project_name": "Casa Ejemplo - Colonia Roma",
+    "project_type": "residential",
+    "created_by": "manual",
+    "version": "1.0"
+  },
+  "levels": [
+    {"name": "Foundation", "elevation_m": -0.60},
+    {"name": "Ground Floor", "elevation_m": 0.00},
+    {"name": "Upper Floor", "elevation_m": 2.80},
+    {"name": "Roof", "elevation_m": 5.60}
+  ],
+  "grids": [
+    {"name": "A", "start": [0, 0], "end": [0, 10]},
+    {"name": "B", "start": [4, 0], "end": [4, 10]},
+    {"name": "C", "start": [8, 0], "end": [8, 10]},
+    {"name": "1", "start": [0, 0], "end": [8, 0]},
+    {"name": "2", "start": [0, 5], "end": [8, 5]},
+    {"name": "3", "start": [0, 10], "end": [8, 10]}
+  ],
+  "walls": [
+    {"type": "Ext - Block 15cm + Plaster", "level": "Ground Floor", "start": [0, 0], "end": [8, 0], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Ground Floor", "start": [8, 0], "end": [8, 10], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Ground Floor", "start": [8, 10], "end": [0, 10], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Ground Floor", "start": [0, 10], "end": [0, 0], "height_m": 2.80},
+    {"type": "Int - Block 10cm + Plaster", "level": "Ground Floor", "start": [4, 0], "end": [4, 10], "height_m": 2.80},
+    {"type": "Int - Block 10cm + Plaster", "level": "Ground Floor", "start": [0, 5], "end": [8, 5], "height_m": 2.80},
+
+    {"type": "Ext - Block 15cm + Plaster", "level": "Upper Floor", "start": [0, 0], "end": [8, 0], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Upper Floor", "start": [8, 0], "end": [8, 10], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Upper Floor", "start": [8, 10], "end": [0, 10], "height_m": 2.80},
+    {"type": "Ext - Block 15cm + Plaster", "level": "Upper Floor", "start": [0, 10], "end": [0, 0], "height_m": 2.80},
+    {"type": "Int - Block 10cm + Plaster", "level": "Upper Floor", "start": [4, 0], "end": [4, 10], "height_m": 2.80},
+    {"type": "Int - Block 10cm + Plaster", "level": "Upper Floor", "start": [0, 5], "end": [4, 5], "height_m": 2.80}
+  ],
+  "fixtures": [
+    {"family": "NGM_Door_Single", "type": "0.90x2.10", "point": [2, 0, 0], "level": "Ground Floor", "host_wall_index": 0},
+    {"family": "NGM_Door_Single", "type": "0.90x2.10", "point": [4, 2.5, 0], "level": "Ground Floor", "host_wall_index": 4},
+    {"family": "NGM_Door_Single", "type": "0.90x2.10", "point": [2, 5, 0], "level": "Ground Floor", "host_wall_index": 5},
+    {"family": "NGM_Window_Sliding", "type": "1.50x1.20", "point": [6, 0, 0.90], "level": "Ground Floor", "host_wall_index": 0},
+    {"family": "NGM_Window_Fixed", "type": "1.20x1.20", "point": [8, 2.5, 0.90], "level": "Ground Floor", "host_wall_index": 1},
+    {"family": "NGM_Window_Fixed", "type": "1.20x1.20", "point": [8, 7.5, 0.90], "level": "Ground Floor", "host_wall_index": 1},
+
+    {"family": "NGM_Door_Single", "type": "0.90x2.10", "point": [4, 2.5, 0], "level": "Upper Floor", "host_wall_index": 10},
+    {"family": "NGM_Door_Single", "type": "0.80x2.10", "point": [2, 5, 0], "level": "Upper Floor", "host_wall_index": 11},
+    {"family": "NGM_Window_Sliding", "type": "1.50x1.20", "point": [2, 0, 0.90], "level": "Upper Floor", "host_wall_index": 6},
+    {"family": "NGM_Window_Sliding", "type": "1.50x1.20", "point": [6, 0, 0.90], "level": "Upper Floor", "host_wall_index": 6}
+  ],
+  "floors": [
+    {"type": "Foundation Slab 20cm", "level": "Foundation", "boundary": [[0,0], [8,0], [8,10], [0,10]]},
+    {"type": "Slab + Ceramic Tile", "level": "Ground Floor", "boundary": [[0,0], [8,0], [8,10], [0,10]]},
+    {"type": "Slab + Ceramic Tile", "level": "Upper Floor", "boundary": [[0,0], [8,0], [8,10], [0,10]]},
+    {"type": "Slab - Concrete 12cm", "level": "Roof", "boundary": [[0,0], [8,0], [8,10], [0,10]]}
+  ],
+  "columns": [
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [0, 0], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [4, 0], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [8, 0], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [0, 5], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [4, 5], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [8, 5], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [0, 10], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [4, 10], "base_level": "Foundation", "top_level": "Roof"},
+    {"family": "NGM_Column_Rectangular", "type": "30x30cm", "point": [8, 10], "base_level": "Foundation", "top_level": "Roof"}
+  ],
+  "beams": [
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [0, 0, 2.80], "end": [4, 0, 2.80], "level": "Upper Floor"},
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [4, 0, 2.80], "end": [8, 0, 2.80], "level": "Upper Floor"},
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [0, 5, 2.80], "end": [4, 5, 2.80], "level": "Upper Floor"},
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [4, 5, 2.80], "end": [8, 5, 2.80], "level": "Upper Floor"},
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [0, 10, 2.80], "end": [4, 10, 2.80], "level": "Upper Floor"},
+    {"family": "NGM_Beam_Rectangular", "type": "20x40cm", "start": [4, 10, 2.80], "end": [8, 10, 2.80], "level": "Upper Floor"}
+  ],
+  "rooms": [
+    {"name": "Living Room", "number": "01", "point": [2, 2.5], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint"},
+    {"name": "Kitchen", "number": "02", "point": [6, 2.5], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Ceramic Tile"},
+    {"name": "Dining Room", "number": "03", "point": [2, 7.5], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint"},
+    {"name": "Laundry", "number": "04", "point": [6, 7.5], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint"},
+    {"name": "Master Bedroom", "number": "05", "point": [2, 2.5], "level": "Upper Floor", "floor_finish": "Wood Flooring", "wall_finish": "Plaster + Paint"},
+    {"name": "Bedroom 2", "number": "06", "point": [6, 2.5], "level": "Upper Floor", "floor_finish": "Wood Flooring", "wall_finish": "Plaster + Paint"},
+    {"name": "Bathroom", "number": "07", "point": [2, 7.5], "level": "Upper Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Ceramic Tile"},
+    {"name": "Hall", "number": "08", "point": [6, 7.5], "level": "Upper Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint"}
+  ],
+  "views": "use_template_defaults",
+  "sheets": "use_template_defaults"
+}

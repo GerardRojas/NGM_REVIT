@@ -1,0 +1,46 @@
+{
+  "_description": "Layouts de sheets NGM. Define titleblock, posicion de vistas en el sheet, y configs de impresion.",
+  "titleblock_family": "NGM_Titleblock_A1",
+  "paper_size": "A1",
+  "paper_width_mm": 841,
+  "paper_height_mm": 594,
+  "print_settings": {
+    "color_mode": "color",
+    "hidden_line_views": "vector",
+    "raster_quality": "high"
+  },
+  "viewport_positions": {
+    "single_view_centered": {
+      "center_x_mm": 400,
+      "center_y_mm": 310
+    },
+    "two_views_horizontal": [
+      {"center_x_mm": 230, "center_y_mm": 310},
+      {"center_x_mm": 600, "center_y_mm": 310}
+    ],
+    "two_views_vertical": [
+      {"center_x_mm": 400, "center_y_mm": 430},
+      {"center_x_mm": 400, "center_y_mm": 190}
+    ],
+    "four_views": [
+      {"center_x_mm": 230, "center_y_mm": 430},
+      {"center_x_mm": 600, "center_y_mm": 430},
+      {"center_x_mm": 230, "center_y_mm": 190},
+      {"center_x_mm": 600, "center_y_mm": 190}
+    ]
+  },
+  "default_sheet_sets": {
+    "architectural": [
+      {"number": "A-001", "title": "Site Plan", "views": ["site_plan"], "layout": "single_view_centered"},
+      {"number": "A-100", "title": "Floor Plans", "views": ["per_level_floor_plan"], "layout": "auto"},
+      {"number": "A-200", "title": "Elevations", "views": ["elevation_north", "elevation_south", "elevation_east", "elevation_west"], "layout": "four_views"},
+      {"number": "A-300", "title": "Sections", "views": ["sections"], "layout": "auto"},
+      {"number": "A-500", "title": "Details", "views": ["details"], "layout": "auto"}
+    ],
+    "structural": [
+      {"number": "S-100", "title": "Foundation Plan", "views": ["foundation_plan"], "layout": "single_view_centered"},
+      {"number": "S-200", "title": "Structural Plans", "views": ["per_level_structural_plan"], "layout": "auto"},
+      {"number": "S-300", "title": "Structural Details", "views": ["structural_details"], "layout": "auto"}
+    ]
+  }
+}
