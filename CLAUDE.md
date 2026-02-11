@@ -64,6 +64,26 @@ AHORA: base.rvt 3MB + codigo en GitHub → build → modelo consistente siempre
 | Build manifest (vectores, puntos, fixtures) | La geometria construida |
 | Material map (Revit name <-> NGM code) | Los materiales asignados |
 
+## Market & Standards
+
+- **Market**: US construction (American market)
+- **Unit system**: US Imperial (ft, in, yd, sq ft, cu ft, lbs)
+- **Revit project units**: Feet and fractional inches (Revit default US)
+- **JSON values**: Decimal feet (e.g. `9.186` for 9'-2 1/4"). Revit API uses feet internally so NO conversion needed
+- **Language**: ALL visible text in English - menu names, button labels, type names, view names, sheet titles, family names, parameter names, room names, annotations
+- **Code comments**: English or Spanish (internal, not visible to end user)
+
+### Unit Reference
+| Imperial | Decimal ft | Use for |
+|---|---|---|
+| 1" | 0.0833 ft | Finish layers |
+| 4" | 0.3333 ft | Block walls |
+| 6" | 0.5 ft | Block/concrete walls |
+| 8" | 0.6667 ft | Block/concrete walls |
+| 9'-2 1/4" | 9.1875 ft | Room heights |
+| 10'-0" | 10.0 ft | Standard ceiling |
+| 12" (1') | 1.0 ft | Columns, slabs |
+
 ## Ecosistema NGM
 - **NGM HUB WEB** (`C:\Users\germa\Desktop\NGM HUB WEB`) - Frontend web
 - **NGM_API** (`C:\Users\germa\Desktop\NGM_API`) - Backend FastAPI + Supabase
@@ -170,9 +190,9 @@ Schema completo en `manifests/_schema.json`. Estructura:
     "version": "1.0"
   },
   "levels": [
-    {"name": "Foundation", "elevation_m": -0.60},
-    {"name": "Ground Floor", "elevation_m": 0.00},
-    {"name": "Upper Floor", "elevation_m": 2.80}
+    {"name": "Foundation", "elevation_ft": -2.0},
+    {"name": "Ground Floor", "elevation_ft": 0.0},
+    {"name": "Second Floor", "elevation_ft": 9.1875}
   ],
   "grids": [
     {"name": "A", "start": [0, 0], "end": [0, 15]},
@@ -180,19 +200,19 @@ Schema completo en `manifests/_schema.json`. Estructura:
   ],
   "walls": [
     {
-      "type": "Ext - Block 15cm + Plaster",
+      "type": "Ext - CMU 6\" + Plaster",
       "level": "Ground Floor",
       "start": [0, 0],
-      "end": [10, 0],
-      "height_m": 2.80,
+      "end": [26.25, 0],
+      "height_ft": 9.1875,
       "structural": false
     }
   ],
   "fixtures": [
     {
       "family": "NGM_Door_Single",
-      "type": "0.90x2.10",
-      "point": [3.5, 0, 0],
+      "type": "3'-0\" x 7'-0\"",
+      "point": [6.56, 0, 0],
       "level": "Ground Floor",
       "host_wall_index": 0,
       "rotation_deg": 0
@@ -200,9 +220,9 @@ Schema completo en `manifests/_schema.json`. Estructura:
   ],
   "floors": [
     {
-      "type": "Slab - Concrete 12cm",
+      "type": "Slab - Concrete 5\"",
       "level": "Ground Floor",
-      "boundary": [[0,0], [10,0], [10,8], [0,8]]
+      "boundary": [[0,0], [26.25,0], [26.25,32.81], [0,32.81]]
     }
   ],
   "rooms": [
@@ -219,19 +239,19 @@ Schema completo en `manifests/_schema.json`. Estructura:
   "columns": [
     {
       "family": "NGM_Column_Rectangular",
-      "type": "30x30cm",
+      "type": "12x12 in",
       "point": [0, 0],
       "base_level": "Foundation",
-      "top_level": "Upper Floor"
+      "top_level": "Roof"
     }
   ],
   "beams": [
     {
       "family": "NGM_Beam_Rectangular",
-      "type": "20x40cm",
-      "start": [0, 0, 2.80],
-      "end": [10, 0, 2.80],
-      "level": "Upper Floor"
+      "type": "8x16 in",
+      "start": [0, 0, 9.1875],
+      "end": [26.25, 0, 9.1875],
+      "level": "Second Floor"
     }
   ],
   "views": "use_template_defaults",
@@ -289,42 +309,42 @@ Schema completo en `manifests/_schema.json`. Estructura:
 - SI tiene: os, sys, json, codecs, datetime, collections, math, re
 - HTTP: `System.Net.WebClient` via clr
 
-### Formato JSON de Exportacion
+### JSON Export Format
 ```json
 {
   "export_info": {
-    "revit_file": "nombre_proyecto.rvt",
+    "revit_file": "project_name.rvt",
     "export_date": "2026-02-11T10:30:00",
     "export_type": "materials|quantities|spaces",
-    "units": "metric"
+    "units": "imperial"
   },
   "items": [...]
 }
 ```
 
-### Mapeo Revit -> NGM Estimador
-- Revit `Category` -> NGM concepto group
-- Revit `Family + Type` -> NGM concepto name
+### Revit -> NGM Estimator Mapping
+- Revit `Category` -> NGM concept group
+- Revit `Family + Type` -> NGM concept name
 - Revit `Material` -> NGM material (via material_map.json)
-- Revit area/volume/count -> NGM cantidad
+- Revit area/volume/count -> NGM quantity (sq ft, cu yd, lf, pcs, lbs)
 
-## Categorias Revit Relevantes
-- `OST_Walls` - Muros
-- `OST_Floors` - Pisos/Losas
-- `OST_Roofs` - Techos
-- `OST_StructuralColumns` - Columnas
-- `OST_StructuralFraming` - Vigas/Trabes
-- `OST_StructuralFoundation` - Cimentacion
-- `OST_Doors` - Puertas
-- `OST_Windows` - Ventanas
-- `OST_Rooms` - Espacios
-- `OST_Stairs` - Escaleras
-- `OST_Rebar` - Acero de refuerzo
+## Relevant Revit Categories
+- `OST_Walls` - Walls
+- `OST_Floors` - Floors / Slabs
+- `OST_Roofs` - Roofs
+- `OST_StructuralColumns` - Columns
+- `OST_StructuralFraming` - Beams / Framing
+- `OST_StructuralFoundation` - Foundations
+- `OST_Doors` - Doors
+- `OST_Windows` - Windows
+- `OST_Rooms` - Rooms
+- `OST_Stairs` - Stairs
+- `OST_Rebar` - Rebar
 
 ## NGM API Endpoints
-- `GET /accounts` - Cuentas/partidas
-- `GET /estimator/concepts/{project_id}` - Conceptos del estimador
-- `POST /estimator/concepts` - Crear concepto
+- `GET /accounts` - Accounts/line items
+- `GET /estimator/concepts/{project_id}` - Estimator concepts
+- `POST /estimator/concepts` - Create concept
 - Prod: `https://ngm-fastapi.onrender.com`
 - Staging: `https://ngm-api-staging.onrender.com`
 

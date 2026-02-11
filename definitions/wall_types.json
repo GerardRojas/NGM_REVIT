@@ -1,98 +1,99 @@
 {
-  "_description": "Definiciones de tipos de muro NGM. Cada entrada se traduce a un WallType en Revit via CompoundStructure. El Build Engine duplica el tipo base generico y aplica estas capas.",
-  "_base_type": "Generic - 200mm",
+  "_description": "NGM wall type definitions. Each entry translates to a WallType in Revit via CompoundStructure. Build Engine duplicates a base generic type and applies these layers.",
+  "_units": "All widths in decimal feet. Revit API uses feet internally.",
+  "_base_type": "Generic - 8\"",
   "wall_types": [
     {
-      "name": "Ext - Block 15cm + Plaster",
+      "name": "Ext - CMU 6\" + Plaster",
       "function": "exterior",
       "structural": false,
-      "total_width_mm": 200,
+      "total_width_ft": 0.6667,
       "layers": [
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
-        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 150},
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_ft": 0.5},
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
       ]
     },
     {
-      "name": "Ext - Block 20cm + Plaster",
+      "name": "Ext - CMU 8\" + Plaster",
       "function": "exterior",
       "structural": false,
-      "total_width_mm": 250,
+      "total_width_ft": 0.8333,
       "layers": [
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
-        {"function": "substrate", "material": "Concrete Masonry Units - 20cm", "width_mm": 200},
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+        {"function": "substrate", "material": "Concrete Masonry Units - 8in", "width_ft": 0.6667},
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
       ]
     },
     {
-      "name": "Int - Block 10cm + Plaster",
+      "name": "Int - CMU 4\" + Plaster",
       "function": "interior",
       "structural": false,
-      "total_width_mm": 150,
+      "total_width_ft": 0.5,
       "layers": [
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
-        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 100},
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_ft": 0.3333},
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
       ]
     },
     {
-      "name": "Int - Block 15cm + Plaster",
+      "name": "Int - CMU 6\" + Plaster",
       "function": "interior",
       "structural": false,
-      "total_width_mm": 200,
+      "total_width_ft": 0.6667,
       "layers": [
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25},
-        {"function": "substrate", "material": "Concrete Masonry Units", "width_mm": 150},
-        {"function": "finish", "material": "Plaster - Cement", "width_mm": 25}
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+        {"function": "substrate", "material": "Concrete Masonry Units", "width_ft": 0.5},
+        {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
       ]
     },
     {
-      "name": "Int - Drywall 12cm",
+      "name": "Int - Drywall 5\"",
       "function": "interior",
       "structural": false,
-      "total_width_mm": 120,
+      "total_width_ft": 0.4167,
       "layers": [
-        {"function": "finish", "material": "Gypsum Wall Board", "width_mm": 15},
-        {"function": "substrate", "material": "Metal Stud", "width_mm": 90},
-        {"function": "finish", "material": "Gypsum Wall Board", "width_mm": 15}
+        {"function": "finish", "material": "Gypsum Wall Board", "width_ft": 0.0521},
+        {"function": "substrate", "material": "Metal Stud - 3 5/8\"", "width_ft": 0.3125},
+        {"function": "finish", "material": "Gypsum Wall Board", "width_ft": 0.0521}
       ]
     },
     {
-      "name": "Struct - Concrete 20cm",
+      "name": "Struct - Concrete 8\"",
       "function": "structural",
       "structural": true,
-      "total_width_mm": 200,
+      "total_width_ft": 0.6667,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.6667}
       ]
     },
     {
-      "name": "Struct - Concrete 25cm",
+      "name": "Struct - Concrete 10\"",
       "function": "structural",
       "structural": true,
-      "total_width_mm": 250,
+      "total_width_ft": 0.8333,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 250}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.8333}
       ]
     },
     {
-      "name": "Struct - Concrete 30cm",
+      "name": "Struct - Concrete 12\"",
       "function": "structural",
       "structural": true,
-      "total_width_mm": 300,
+      "total_width_ft": 1.0,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 300}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 1.0}
       ]
     },
     {
-      "name": "Ext - Metal Panel + Insulation",
+      "name": "Ext - Metal Panel + Insulation 6\"",
       "function": "exterior",
       "structural": false,
-      "total_width_mm": 150,
+      "total_width_ft": 0.5,
       "layers": [
-        {"function": "finish", "material": "Metal Panel - Insulated", "width_mm": 50},
-        {"function": "thermal", "material": "Insulation - Rigid", "width_mm": 50},
-        {"function": "substrate", "material": "Metal Panel - Insulated", "width_mm": 50}
+        {"function": "finish", "material": "Metal Panel - Insulated", "width_ft": 0.1667},
+        {"function": "thermal", "material": "Insulation - Rigid", "width_ft": 0.1667},
+        {"function": "substrate", "material": "Metal Panel - Insulated", "width_ft": 0.1667}
       ]
     }
   ]

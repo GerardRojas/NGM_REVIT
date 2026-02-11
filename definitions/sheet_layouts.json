@@ -1,9 +1,9 @@
 {
-  "_description": "Layouts de sheets NGM. Define titleblock, posicion de vistas en el sheet, y configs de impresion.",
-  "titleblock_family": "NGM_Titleblock_A1",
-  "paper_size": "A1",
-  "paper_width_mm": 841,
-  "paper_height_mm": 594,
+  "_description": "NGM sheet layout definitions. Paper sizes in US standard (ARCH D). All labels in English.",
+  "titleblock_family": "NGM_Titleblock_ARCH-D",
+  "paper_size": "ARCH D",
+  "paper_width_in": 36,
+  "paper_height_in": 24,
   "print_settings": {
     "color_mode": "color",
     "hidden_line_views": "vector",
@@ -11,22 +11,22 @@
   },
   "viewport_positions": {
     "single_view_centered": {
-      "center_x_mm": 400,
-      "center_y_mm": 310
+      "center_x_in": 17,
+      "center_y_in": 13
     },
     "two_views_horizontal": [
-      {"center_x_mm": 230, "center_y_mm": 310},
-      {"center_x_mm": 600, "center_y_mm": 310}
+      {"center_x_in": 10, "center_y_in": 13},
+      {"center_x_in": 26, "center_y_in": 13}
     ],
     "two_views_vertical": [
-      {"center_x_mm": 400, "center_y_mm": 430},
-      {"center_x_mm": 400, "center_y_mm": 190}
+      {"center_x_in": 17, "center_y_in": 18},
+      {"center_x_in": 17, "center_y_in": 8}
     ],
     "four_views": [
-      {"center_x_mm": 230, "center_y_mm": 430},
-      {"center_x_mm": 600, "center_y_mm": 430},
-      {"center_x_mm": 230, "center_y_mm": 190},
-      {"center_x_mm": 600, "center_y_mm": 190}
+      {"center_x_in": 10, "center_y_in": 18},
+      {"center_x_in": 26, "center_y_in": 18},
+      {"center_x_in": 10, "center_y_in": 8},
+      {"center_x_in": 26, "center_y_in": 8}
     ]
   },
   "default_sheet_sets": {

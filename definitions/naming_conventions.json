@@ -1,5 +1,5 @@
 {
-  "_description": "Nomenclatura estandar NGM. Aplicada automaticamente por Build Engine y Drawing Package.",
+  "_description": "NGM naming standards. ALL visible names in English. Applied automatically by Build Engine and Drawing Package.",
   "levels": {
     "pattern": "{prefix} - {name}",
     "prefix_by_type": {
@@ -10,7 +10,7 @@
       "roof": "RF",
       "mezzanine": "MZ"
     },
-    "examples": ["FDN - Foundation", "GF - Ground Floor", "L2 - Upper Floor", "RF - Roof"]
+    "examples": ["FDN - Foundation", "GF - Ground Floor", "L2 - Second Floor", "RF - Roof"]
   },
   "grids": {
     "horizontal": "Letters (A, B, C...)",
@@ -67,15 +67,15 @@
       "NGM_Window_Sliding",
       "NGM_Column_Rectangular",
       "NGM_Beam_Steel_W",
-      "NGM_Titleblock_A1"
+      "NGM_Titleblock_ARCH-D"
     ]
   },
   "types": {
-    "walls": "{function} - {material} {width}",
-    "floors": "{name} {thickness}",
-    "columns": "{width}x{depth}cm",
-    "beams": "{width}x{depth}cm",
-    "doors": "{width}x{height}m",
-    "windows": "{width}x{height}m"
+    "walls": "{function} - {material} {width_in}\"",
+    "floors": "{name} {thickness_in}\"",
+    "columns": "{w}x{d} in",
+    "beams": "{w}x{d} in",
+    "doors": "{w_ft}'-{w_in}\" x {h_ft}'-{h_in}\"",
+    "windows": "{w_ft}'-{w_in}\" x {h_ft}'-{h_in}\""
   }
 }

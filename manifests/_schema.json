@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "NGM Build Manifest",
-  "description": "Contrato entre NGM HUB Web (o edicion manual) y pyRevit Build Engine. Define todo lo necesario para construir un modelo Revit desde cero.",
+  "description": "Contract between NGM HUB Web (or manual editing) and pyRevit Build Engine. All coordinates and dimensions in decimal feet (Revit internal units).",
   "type": "object",
   "required": ["meta", "levels"],
   "properties": {
@@ -9,21 +9,21 @@
       "type": "object",
       "required": ["project_name", "project_type"],
       "properties": {
-        "project_name": {"type": "string", "description": "Nombre del proyecto"},
+        "project_name": {"type": "string", "description": "Project name"},
         "project_type": {"type": "string", "enum": ["residential", "commercial", "industrial"]},
         "created_by": {"type": "string", "enum": ["manual", "ocr_tool", "web_configurator"]},
         "version": {"type": "string", "default": "1.0"},
-        "ngm_project_id": {"type": "string", "description": "UUID del proyecto en NGM HUB (para sync)"}
+        "ngm_project_id": {"type": "string", "description": "Project UUID in NGM HUB (for sync)"}
       }
     },
     "levels": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "elevation_m"],
+        "required": ["name", "elevation_ft"],
         "properties": {
           "name": {"type": "string"},
-          "elevation_m": {"type": "number"}
+          "elevation_ft": {"type": "number", "description": "Elevation in decimal feet"}
         }
       }
     },
@@ -34,8 +34,8 @@
         "required": ["name", "start", "end"],
         "properties": {
           "name": {"type": "string"},
-          "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-          "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}
+          "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+          "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"}
         }
       }
     },
@@ -45,27 +45,27 @@
         "type": "object",
         "required": ["type", "level", "start", "end"],
         "properties": {
-          "type": {"type": "string", "description": "Debe coincidir con un name en definitions/wall_types.json"},
-          "level": {"type": "string", "description": "Debe coincidir con un name en levels"},
-          "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-          "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-          "height_m": {"type": "number", "description": "Si omitido, usa altura del nivel"},
+          "type": {"type": "string", "description": "Must match a name in definitions/wall_types.json"},
+          "level": {"type": "string", "description": "Must match a name in levels"},
+          "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+          "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+          "height_ft": {"type": "number", "description": "Wall height in feet. If omitted, uses level height"},
           "structural": {"type": "boolean", "default": false}
         }
       }
     },
     "fixtures": {
       "type": "array",
-      "description": "Puertas, ventanas, fixtures MEP - cualquier familia hosted o libre",
+      "description": "Doors, windows, MEP fixtures - any hosted or freestanding family",
       "items": {
         "type": "object",
         "required": ["family", "point", "level"],
         "properties": {
-          "family": {"type": "string", "description": "Nombre de la familia en vault (sin .rfa)"},
-          "type": {"type": "string", "description": "Nombre del tipo dentro de la familia"},
-          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 3},
+          "family": {"type": "string", "description": "Family name in vault (without .rfa)"},
+          "type": {"type": "string", "description": "Type name within the family"},
+          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 3, "description": "[x, y] or [x, y, z] in feet"},
           "level": {"type": "string"},
-          "host_wall_index": {"type": "integer", "description": "Index del muro host en el array walls (para puertas/ventanas)"},
+          "host_wall_index": {"type": "integer", "description": "Index of host wall in walls array (for doors/windows)"},
           "rotation_deg": {"type": "number", "default": 0}
         }
       }
@@ -76,9 +76,9 @@
         "type": "object",
         "required": ["type", "level", "boundary"],
         "properties": {
-          "type": {"type": "string", "description": "Debe coincidir con definitions/floor_types.json"},
+          "type": {"type": "string", "description": "Must match definitions/floor_types.json"},
           "level": {"type": "string"},
-          "boundary": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}, "description": "Poligono cerrado de puntos [x,y]"}
+          "boundary": {"type": "array", "items": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}, "description": "Closed polygon of [x,y] points in feet"}
         }
       }
     },
@@ -90,7 +90,7 @@
         "properties": {
           "family": {"type": "string"},
           "type": {"type": "string"},
-          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
           "base_level": {"type": "string"},
           "top_level": {"type": "string"},
           "rotation_deg": {"type": "number", "default": 0}
@@ -105,8 +105,8 @@
         "properties": {
           "family": {"type": "string"},
           "type": {"type": "string"},
-          "start": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
-          "end": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+          "start": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3, "description": "[x, y, z] in feet"},
+          "end": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3, "description": "[x, y, z] in feet"},
           "level": {"type": "string"}
         }
       }
@@ -119,7 +119,7 @@
         "properties": {
           "name": {"type": "string"},
           "number": {"type": "string"},
-          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+          "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
           "level": {"type": "string"},
           "floor_finish": {"type": "string"},
           "wall_finish": {"type": "string"},

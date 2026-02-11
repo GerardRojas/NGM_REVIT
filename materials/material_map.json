@@ -1,133 +1,133 @@
 {
-  "_description": "Mapeo bidireccional entre materiales de Revit y el catalogo NGM. Cada entrada vincula un material del modelo BIM con su equivalente en el estimador/base de datos de NGM.",
-  "_usage": "El script SyncMaterials usa este archivo para vincular materiales. Los scripts de exportacion lo usan para traducir nombres de material Revit a codigos NGM.",
+  "_description": "Bidirectional mapping between Revit materials and NGM catalog. Links BIM materials to estimator/database equivalents.",
+  "_units": "US Imperial: sq ft, cu yd, lf (linear ft), pcs, lbs, bf (board feet)",
   "materials": [
     {
       "revit_name": "Concrete - Cast In Place",
       "ngm_code": "CONC-001",
-      "ngm_name": "Concreto f'c 250 kg/cm2",
-      "unit": "m3",
+      "ngm_name": "Cast-in-Place Concrete 4000 psi",
+      "unit": "cu yd",
       "category": "Structural"
     },
     {
       "revit_name": "Concrete - Precast",
       "ngm_code": "CONC-002",
-      "ngm_name": "Concreto Precolado",
-      "unit": "m3",
+      "ngm_name": "Precast Concrete",
+      "unit": "cu yd",
       "category": "Structural"
     },
     {
       "revit_name": "Concrete Masonry Units",
-      "ngm_code": "MAM-001",
-      "ngm_name": "Block 15x20x40",
-      "unit": "pza",
+      "ngm_code": "CMU-001",
+      "ngm_name": "CMU Block 6x8x16",
+      "unit": "pcs",
       "category": "Masonry"
     },
     {
-      "revit_name": "Concrete Masonry Units - 20cm",
-      "ngm_code": "MAM-002",
-      "ngm_name": "Block 20x20x40",
-      "unit": "pza",
+      "revit_name": "Concrete Masonry Units - 8in",
+      "ngm_code": "CMU-002",
+      "ngm_name": "CMU Block 8x8x16",
+      "unit": "pcs",
       "category": "Masonry"
     },
     {
       "revit_name": "Steel - ASTM A36",
-      "ngm_code": "ACE-001",
-      "ngm_name": "Acero Estructural A36",
-      "unit": "kg",
+      "ngm_code": "STL-001",
+      "ngm_name": "Structural Steel A36",
+      "unit": "lbs",
       "category": "Steel"
     },
     {
       "revit_name": "Rebar - Grade 60",
-      "ngm_code": "ACE-002",
-      "ngm_name": "Acero de Refuerzo fy 4200",
-      "unit": "kg",
+      "ngm_code": "STL-002",
+      "ngm_name": "Rebar Grade 60",
+      "unit": "lbs",
       "category": "Steel"
     },
     {
       "revit_name": "Gypsum Wall Board",
-      "ngm_code": "TAB-001",
-      "ngm_name": "Tablaroca 1/2\"",
-      "unit": "m2",
+      "ngm_code": "GWB-001",
+      "ngm_name": "Gypsum Board 1/2\"",
+      "unit": "sq ft",
       "category": "Finishes"
     },
     {
       "revit_name": "Plaster - Cement",
-      "ngm_code": "ACA-001",
-      "ngm_name": "Aplanado de Mortero",
-      "unit": "m2",
+      "ngm_code": "FIN-001",
+      "ngm_name": "Cement Plaster",
+      "unit": "sq ft",
       "category": "Finishes"
     },
     {
       "revit_name": "Ceramic Tile",
-      "ngm_code": "ACA-002",
-      "ngm_name": "Piso Ceramico",
-      "unit": "m2",
+      "ngm_code": "FIN-002",
+      "ngm_name": "Ceramic Floor Tile",
+      "unit": "sq ft",
       "category": "Finishes"
     },
     {
       "revit_name": "Paint - Interior",
-      "ngm_code": "PIN-001",
-      "ngm_name": "Pintura Vinilica Interior",
-      "unit": "m2",
+      "ngm_code": "PNT-001",
+      "ngm_name": "Interior Latex Paint",
+      "unit": "sq ft",
       "category": "Finishes"
     },
     {
       "revit_name": "Paint - Exterior",
-      "ngm_code": "PIN-002",
-      "ngm_name": "Pintura Acrilica Exterior",
-      "unit": "m2",
+      "ngm_code": "PNT-002",
+      "ngm_name": "Exterior Acrylic Paint",
+      "unit": "sq ft",
       "category": "Finishes"
     },
     {
       "revit_name": "Metal - Aluminum",
-      "ngm_code": "CAN-001",
-      "ngm_name": "Canceleria de Aluminio",
-      "unit": "m2",
+      "ngm_code": "ALM-001",
+      "ngm_name": "Aluminum Window Frame",
+      "unit": "sq ft",
       "category": "Openings"
     },
     {
       "revit_name": "Glass - Clear",
-      "ngm_code": "VID-001",
-      "ngm_name": "Vidrio Claro 6mm",
-      "unit": "m2",
+      "ngm_code": "GLS-001",
+      "ngm_name": "Clear Glass 1/4\"",
+      "unit": "sq ft",
       "category": "Openings"
     },
     {
       "revit_name": "Waterproofing Membrane",
-      "ngm_code": "IMP-001",
-      "ngm_name": "Impermeabilizante Prefabricado",
-      "unit": "m2",
+      "ngm_code": "WPF-001",
+      "ngm_name": "Waterproofing Membrane",
+      "unit": "sq ft",
       "category": "Waterproofing"
     },
     {
       "revit_name": "Insulation - Rigid",
-      "ngm_code": "AIS-001",
-      "ngm_name": "Aislamiento Termico Rigido",
-      "unit": "m2",
+      "ngm_code": "INS-001",
+      "ngm_name": "Rigid Board Insulation",
+      "unit": "sq ft",
       "category": "Insulation"
     },
     {
       "revit_name": "Metal Deck",
-      "ngm_code": "LOS-001",
-      "ngm_name": "Losacero Galvanizada",
-      "unit": "m2",
+      "ngm_code": "DCK-001",
+      "ngm_name": "Galvanized Metal Deck",
+      "unit": "sq ft",
       "category": "Structural"
     },
     {
       "revit_name": "Wood - Structural",
-      "ngm_code": "MAD-001",
-      "ngm_name": "Madera Estructural Pino",
-      "unit": "m3",
+      "ngm_code": "WD-001",
+      "ngm_name": "Structural Lumber (Pine)",
+      "unit": "bf",
       "category": "Wood"
     },
     {
       "revit_name": "Metal Panel - Insulated",
-      "ngm_code": "PAN-001",
-      "ngm_name": "Panel Metalico Aislado",
-      "unit": "m2",
+      "ngm_code": "PNL-001",
+      "ngm_name": "Insulated Metal Panel",
+      "unit": "sq ft",
       "category": "Cladding"
     }
   ],
-  "_unmapped_handling": "Materiales de Revit que no aparezcan aqui se exportan con revit_name tal cual y ngm_code='UNMAPPED'. El usuario debe agregarlos manualmente a este archivo o al catalogo NGM."
+  "_unmapped_handling": "Revit materials not listed here get exported with revit_name as-is and ngm_code='UNMAPPED'. User must add them to this file or the NGM catalog."
 }

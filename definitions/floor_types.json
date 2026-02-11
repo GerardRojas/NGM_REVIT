@@ -1,72 +1,72 @@
 {
-  "_description": "Definiciones de tipos de piso/losa NGM.",
-  "_base_type": "Generic Floor - 200mm",
+  "_description": "NGM floor/slab type definitions. All thicknesses in decimal feet.",
+  "_base_type": "Generic Floor - 8\"",
   "floor_types": [
     {
-      "name": "Slab - Concrete 12cm",
+      "name": "Slab - Concrete 5\"",
       "structural": true,
-      "total_thickness_mm": 120,
+      "total_thickness_ft": 0.4167,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 120}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.4167}
       ]
     },
     {
-      "name": "Slab - Concrete 15cm",
+      "name": "Slab - Concrete 6\"",
       "structural": true,
-      "total_thickness_mm": 150,
+      "total_thickness_ft": 0.5,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 150}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.5}
       ]
     },
     {
-      "name": "Slab - Concrete 20cm",
+      "name": "Slab - Concrete 8\"",
       "structural": true,
-      "total_thickness_mm": 200,
+      "total_thickness_ft": 0.6667,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.6667}
       ]
     },
     {
-      "name": "Foundation Slab 20cm",
+      "name": "Foundation Slab 8\"",
       "structural": true,
-      "total_thickness_mm": 200,
+      "total_thickness_ft": 0.6667,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 200}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.6667}
       ]
     },
     {
-      "name": "Foundation Mat 40cm",
+      "name": "Foundation Mat 16\"",
       "structural": true,
-      "total_thickness_mm": 400,
+      "total_thickness_ft": 1.3333,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 400}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 1.3333}
       ]
     },
     {
-      "name": "SOG - Concrete 15cm",
+      "name": "SOG - Concrete 6\"",
       "structural": true,
-      "total_thickness_mm": 150,
+      "total_thickness_ft": 0.5,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 150}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.5}
       ]
     },
     {
       "name": "Slab + Ceramic Tile",
       "structural": true,
-      "total_thickness_mm": 135,
+      "total_thickness_ft": 0.4583,
       "layers": [
-        {"function": "finish", "material": "Ceramic Tile", "width_mm": 10},
-        {"function": "substrate", "material": "Mortar Bed", "width_mm": 5},
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 120}
+        {"function": "finish", "material": "Ceramic Tile", "width_ft": 0.0313},
+        {"function": "substrate", "material": "Mortar Bed", "width_ft": 0.0104},
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.4167}
       ]
     },
     {
-      "name": "Losacero",
+      "name": "Metal Deck Composite",
       "structural": true,
-      "total_thickness_mm": 130,
+      "total_thickness_ft": 0.4375,
       "layers": [
-        {"function": "structure", "material": "Concrete - Cast In Place", "width_mm": 80},
-        {"function": "structure", "material": "Metal Deck", "width_mm": 50}
+        {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.2708},
+        {"function": "structure", "material": "Metal Deck", "width_ft": 0.1667}
       ]
     }
   ]
