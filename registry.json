@@ -1,0 +1,194 @@
+{
+  "_description": "NGM Revit ecosystem registry. Describes all scripts, families, and capabilities available. Read by NGM API to serve to the Project Builder web UI.",
+  "version": "1.0",
+  "panels": {
+    "build": {
+      "label": "Build",
+      "description": "Build Revit models from manifest configuration files",
+      "scripts": [
+        {
+          "id": "build_from_manifest",
+          "name": "Build From Manifest",
+          "description": "Reads a manifest JSON and builds the complete Revit model: levels, grids, wall types, walls, fixtures, floors, columns, beams, rooms",
+          "status": "planned",
+          "inputs": ["manifest.json"],
+          "creates": ["levels", "grids", "wall_types", "walls", "fixtures", "floors", "columns", "beams", "rooms"]
+        },
+        {
+          "id": "load_definitions",
+          "name": "Load Definitions",
+          "description": "Applies wall types, floor types, and graphic styles from definitions to the active Revit document without placing geometry",
+          "status": "planned",
+          "inputs": ["definitions/wall_types.json", "definitions/floor_types.json", "definitions/graphic_styles.json"]
+        }
+      ]
+    },
+    "export": {
+      "label": "Export",
+      "description": "Extract data from Revit models to JSON for estimator and analysis",
+      "scripts": [
+        {
+          "id": "export_quantities",
+          "name": "Export Quantities",
+          "description": "Groups elements by Family+Type with count, area, and volume totals. Output compatible with NGM estimator.",
+          "status": "ready",
+          "outputs": ["quantities_{project}_{timestamp}.json"],
+          "categories": ["Walls", "Floors", "Roofs", "Structural Columns", "Structural Framing", "Foundations", "Doors", "Windows", "Stairs", "Rebar"]
+        },
+        {
+          "id": "export_materials",
+          "name": "Export Materials",
+          "description": "Extracts all materials from model elements with area and volume per material. Includes material summary.",
+          "status": "ready",
+          "outputs": ["materials_{project}_{timestamp}.json"]
+        },
+        {
+          "id": "export_spaces",
+          "name": "Export Spaces",
+          "description": "Extracts Rooms with floor area, perimeter, wall area, and finish assignments. Includes level summary.",
+          "status": "ready",
+          "outputs": ["spaces_{project}_{timestamp}.json"]
+        }
+      ]
+    },
+    "drawings": {
+      "label": "Drawings",
+      "description": "Automated drawing package generation",
+      "scripts": [
+        {
+          "id": "generate_sheets",
+          "name": "Generate Sheets",
+          "description": "Creates sheets with viewports based on template configuration. Applies titleblock, positions views.",
+          "status": "planned"
+        },
+        {
+          "id": "export_pdf",
+          "name": "Export PDF",
+          "description": "Exports all sheets to PDF with correct print settings.",
+          "status": "planned"
+        }
+      ]
+    },
+    "tools": {
+      "label": "Tools",
+      "description": "Model maintenance and quality assurance utilities",
+      "scripts": [
+        {
+          "id": "purge_model",
+          "name": "Purge Model",
+          "description": "Removes unused families, types, materials, and views from the model.",
+          "status": "planned"
+        },
+        {
+          "id": "rename_views",
+          "name": "Rename Views",
+          "description": "Renames all views and sheets to match NGM naming conventions.",
+          "status": "planned"
+        },
+        {
+          "id": "model_qa",
+          "name": "Model QA",
+          "description": "Runs quality checks: unplaced rooms, duplicate types, missing parameters, unnamed elements.",
+          "status": "planned"
+        }
+      ]
+    },
+    "sync": {
+      "label": "Sync",
+      "description": "Bidirectional sync between Revit model and NGM API",
+      "scripts": [
+        {
+          "id": "sync_materials",
+          "name": "Sync Materials",
+          "description": "Pushes model materials to NGM API and pulls updated material costs back into Revit parameters.",
+          "status": "planned"
+        },
+        {
+          "id": "push_to_estimator",
+          "name": "Push to Estimator",
+          "description": "Exports quantities and pushes directly to a linked NGM project estimator via API.",
+          "status": "planned"
+        }
+      ]
+    }
+  },
+  "families": {
+    "structural": [
+      {"name": "NGM_Column_Rectangular", "types": ["12x12 in", "16x16 in", "20x20 in"], "status": "planned"},
+      {"name": "NGM_Column_Circular", "types": ["12 in dia", "18 in dia"], "status": "planned"},
+      {"name": "NGM_Column_Steel_W", "types": ["W8x31", "W10x49", "W12x65"], "status": "planned"},
+      {"name": "NGM_Column_Steel_HSS", "types": ["HSS6x6x3/8", "HSS8x8x1/2"], "status": "planned"},
+      {"name": "NGM_Beam_Rectangular", "types": ["8x16 in", "10x20 in", "12x24 in"], "status": "planned"},
+      {"name": "NGM_Beam_Steel_W", "types": ["W10x22", "W12x26", "W16x36"], "status": "planned"},
+      {"name": "NGM_Beam_Steel_Joist", "types": ["18K3", "22K6", "28K7"], "status": "planned"},
+      {"name": "NGM_Truss_Standard", "types": ["Span 20ft", "Span 30ft", "Span 40ft"], "status": "planned"},
+      {"name": "NGM_Foundation_Strip", "types": ["12x24 in", "16x30 in"], "status": "planned"},
+      {"name": "NGM_Foundation_Pad", "types": ["4x4 ft", "6x6 ft", "8x8 ft"], "status": "planned"},
+      {"name": "NGM_Foundation_Pile", "types": ["12 in dia", "18 in dia"], "status": "planned"},
+      {"name": "NGM_Brace_Steel", "types": ["L4x4x3/8", "HSS4x4x1/4"], "status": "planned"}
+    ],
+    "architectural": [
+      {"name": "NGM_Door_Single", "types": ["2'-8\" x 7'-0\"", "3'-0\" x 7'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Double", "types": ["6'-0\" x 7'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Sliding", "types": ["6'-0\" x 7'-0\"", "8'-0\" x 7'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Rollup", "types": ["10'-0\" x 10'-0\"", "12'-0\" x 12'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Overhead", "types": ["10'-0\" x 10'-0\"", "14'-0\" x 14'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Glass", "types": ["3'-0\" x 7'-0\"", "6'-0\" x 7'-0\""], "status": "planned"},
+      {"name": "NGM_Door_Revolving", "types": ["7'-0\" dia"], "status": "planned"},
+      {"name": "NGM_Window_Fixed", "types": ["3'-0\" x 4'-0\"", "4'-0\" x 4'-0\""], "status": "planned"},
+      {"name": "NGM_Window_Sliding", "types": ["4'-0\" x 4'-0\"", "5'-0\" x 4'-0\"", "6'-0\" x 4'-0\""], "status": "planned"},
+      {"name": "NGM_Window_Casement", "types": ["2'-6\" x 4'-0\"", "3'-0\" x 4'-0\""], "status": "planned"},
+      {"name": "NGM_Window_Fixed_Commercial", "types": ["5'-0\" x 6'-0\"", "8'-0\" x 6'-0\""], "status": "planned"},
+      {"name": "NGM_Window_Industrial", "types": ["4'-0\" x 3'-0\""], "status": "planned"},
+      {"name": "NGM_CurtainWall_Panel", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Stair_Standard", "types": ["3'-6\" wide", "4'-0\" wide"], "status": "planned"},
+      {"name": "NGM_Stair_Commercial", "types": ["4'-0\" wide", "5'-0\" wide"], "status": "planned"},
+      {"name": "NGM_Elevator_Standard", "types": ["Passenger", "Freight"], "status": "planned"},
+      {"name": "NGM_Louver_Standard", "types": ["2'-0\" x 2'-0\"", "3'-0\" x 2'-0\""], "status": "planned"},
+      {"name": "NGM_Dock_Leveler", "types": ["6'-0\" x 8'-0\""], "status": "planned"}
+    ],
+    "mep": [
+      {"name": "NGM_Outlet_Standard", "types": ["Duplex 120V"], "status": "planned"},
+      {"name": "NGM_Outlet_Floor", "types": ["Floor Box"], "status": "planned"},
+      {"name": "NGM_Outlet_Industrial", "types": ["240V 30A"], "status": "planned"},
+      {"name": "NGM_Switch_Single", "types": ["Single Pole"], "status": "planned"},
+      {"name": "NGM_Light_Ceiling", "types": ["Flush Mount"], "status": "planned"},
+      {"name": "NGM_Light_Ceiling_Commercial", "types": ["2x4 Troffer"], "status": "planned"},
+      {"name": "NGM_Light_Recessed", "types": ["6 in Can"], "status": "planned"},
+      {"name": "NGM_Light_Highbay", "types": ["LED 200W"], "status": "planned"},
+      {"name": "NGM_HVAC_Diffuser", "types": ["Square 24x24"], "status": "planned"},
+      {"name": "NGM_HVAC_Unit_Rooftop", "types": ["5 Ton", "10 Ton"], "status": "planned"},
+      {"name": "NGM_HVAC_Exhaust_Fan", "types": ["12 in", "24 in"], "status": "planned"},
+      {"name": "NGM_Fire_Sprinkler", "types": ["Pendant", "Upright"], "status": "planned"},
+      {"name": "NGM_Plumbing_Sink", "types": ["Single Bowl"], "status": "planned"},
+      {"name": "NGM_Plumbing_Sink_Commercial", "types": ["Stainless Double"], "status": "planned"},
+      {"name": "NGM_Plumbing_Toilet", "types": ["Floor Mount"], "status": "planned"},
+      {"name": "NGM_Plumbing_Toilet_Commercial", "types": ["Wall Mount"], "status": "planned"},
+      {"name": "NGM_Plumbing_Shower", "types": ["36x36 in"], "status": "planned"}
+    ],
+    "annotations": [
+      {"name": "NGM_Titleblock_ARCH-D", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Titleblock_ARCH-E", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Room", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Door", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Window", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Level", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Parking", "types": ["Standard"], "status": "planned"},
+      {"name": "NGM_Tag_Steel_Member", "types": ["Standard"], "status": "planned"}
+    ]
+  },
+  "definitions_index": {
+    "wall_types": {"file": "definitions/wall_types.json", "count": 9, "description": "Wall compound structures: layers, materials, widths"},
+    "floor_types": {"file": "definitions/floor_types.json", "count": 8, "description": "Floor/slab types: layers, thicknesses"},
+    "view_templates": {"file": "definitions/view_templates.json", "count": 5, "description": "View template configs: scale, detail level, visibility"},
+    "sheet_layouts": {"file": "definitions/sheet_layouts.json", "count": 1, "description": "Sheet paper size, titleblock, viewport positions"},
+    "graphic_styles": {"file": "definitions/graphic_styles.json", "count": 1, "description": "Line weights, colors, fill patterns, filters"},
+    "naming_conventions": {"file": "definitions/naming_conventions.json", "count": 1, "description": "Naming standards for levels, grids, views, sheets, families"},
+    "shared_parameters": {"file": "definitions/shared_parameters.json", "count": 5, "description": "NGM custom parameters bound to Revit categories"}
+  },
+  "templates_index": {
+    "residential": {"file": "templates/residential.json", "description": "Houses, apartments, condos"},
+    "commercial": {"file": "templates/commercial.json", "description": "Offices, retail, mixed-use"},
+    "industrial": {"file": "templates/industrial.json", "description": "Warehouses, factories, workshops"}
+  }
+}
