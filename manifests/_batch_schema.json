@@ -1,0 +1,589 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NGM Build Batch",
+  "description": "Complete build package assembled by NGM backend and consumed by pyRevit Build Engine. Wraps filtered definitions, family download list, material map, and geometry manifest into a single JSON contract. All dimensions in decimal feet (Revit internal units). All text in English.",
+  "type": "object",
+  "required": ["batch_meta", "project", "definitions", "families", "manifest"],
+  "additionalProperties": false,
+  "properties": {
+
+    "batch_meta": {
+      "type": "object",
+      "description": "Envelope metadata about the batch package itself",
+      "required": ["batch_version", "batch_id", "created_at"],
+      "properties": {
+        "batch_version": {
+          "type": "string",
+          "description": "Batch schema semver version",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "batch_id": {
+          "type": "string",
+          "description": "Unique batch identifier (UUID v4)",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the batch was assembled"
+        },
+        "created_by": {
+          "type": "string",
+          "enum": ["web_configurator", "api_assembler", "manual"],
+          "description": "System that assembled this batch"
+        },
+        "ngm_project_id": {
+          "type": "string",
+          "description": "Project UUID in NGM HUB (for bidirectional sync with estimator)"
+        },
+        "ngm_user_id": {
+          "type": "string",
+          "description": "User UUID who triggered the batch generation"
+        },
+        "source_template": {
+          "type": "string",
+          "enum": ["residential", "commercial", "industrial"],
+          "description": "Template used as the assembly starting point"
+        },
+        "checksum": {
+          "type": "string",
+          "description": "SHA-256 of batch content (excluding this field) for integrity verification"
+        }
+      }
+    },
+
+    "project": {
+      "type": "object",
+      "description": "Project-level configuration and identity",
+      "required": ["project_name", "project_type"],
+      "properties": {
+        "project_name": {
+          "type": "string",
+          "description": "Display name for the Revit project file"
+        },
+        "project_type": {
+          "type": "string",
+          "enum": ["residential", "commercial", "industrial"]
+        },
+        "project_number": {
+          "type": "string",
+          "description": "NGM project number (e.g., NGM-2026-0042)"
+        },
+        "client_name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief project description for cover sheet"
+        },
+        "units": {
+          "type": "string",
+          "enum": ["imperial"],
+          "default": "imperial",
+          "description": "Always imperial. All numeric values in decimal feet."
+        }
+      }
+    },
+
+    "definitions": {
+      "type": "object",
+      "description": "Filtered definition objects that Build Engine must CREATE in the Revit document. Only includes what this project needs.",
+      "required": ["wall_types", "floor_types"],
+      "properties": {
+        "wall_types": {
+          "type": "array",
+          "description": "Wall compound structures to create. Full layer definitions from definitions/wall_types.json, filtered to only types this project uses.",
+          "items": {
+            "type": "object",
+            "required": ["name", "function", "total_width_ft", "layers"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Wall type name. Must match references in manifest.walls[].type"
+              },
+              "function": {
+                "type": "string",
+                "enum": ["exterior", "interior", "structural"]
+              },
+              "structural": {
+                "type": "boolean",
+                "default": false
+              },
+              "total_width_ft": {
+                "type": "number",
+                "description": "Total wall width in decimal feet"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["function", "material", "width_ft"],
+                  "properties": {
+                    "function": {
+                      "type": "string",
+                      "enum": ["finish", "substrate", "structure", "thermal", "membrane"]
+                    },
+                    "material": {
+                      "type": "string",
+                      "description": "Revit material name. Must exist in materials[] or Revit defaults."
+                    },
+                    "width_ft": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "floor_types": {
+          "type": "array",
+          "description": "Floor/slab compound structures to create. Full layer definitions from definitions/floor_types.json.",
+          "items": {
+            "type": "object",
+            "required": ["name", "total_thickness_ft", "layers"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Floor type name. Must match references in manifest.floors[].type"
+              },
+              "structural": {
+                "type": "boolean",
+                "default": true
+              },
+              "total_thickness_ft": {
+                "type": "number",
+                "description": "Total slab thickness in decimal feet"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["function", "material", "width_ft"],
+                  "properties": {
+                    "function": {
+                      "type": "string",
+                      "enum": ["finish", "substrate", "structure"]
+                    },
+                    "material": {
+                      "type": "string"
+                    },
+                    "width_ft": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "view_templates": {
+          "type": "array",
+          "description": "View template configurations to create and apply. From definitions/view_templates.json.",
+          "items": {
+            "type": "object",
+            "required": ["name", "view_family", "scale", "detail_level"],
+            "properties": {
+              "name": {"type": "string"},
+              "view_family": {
+                "type": "string",
+                "enum": ["floor_plan", "ceiling_plan", "section", "elevation", "3d"]
+              },
+              "scale": {
+                "type": "integer",
+                "description": "View scale denominator (e.g., 48 for 1/4\"=1'-0\")"
+              },
+              "detail_level": {
+                "type": "string",
+                "enum": ["coarse", "medium", "fine"]
+              },
+              "discipline": {
+                "type": "string",
+                "enum": ["architectural", "structural", "mechanical", "electrical", "plumbing"]
+              },
+              "category_visibility": {
+                "type": "object",
+                "properties": {
+                  "hide": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Revit OST_ category names to hide"
+                  },
+                  "halftone": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Revit OST_ category names to halftone"
+                  }
+                }
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string"},
+                    "categories": {"type": "array", "items": {"type": "string"}},
+                    "rule": {"type": "string"},
+                    "override": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "sheet_layout": {
+          "type": "object",
+          "description": "Sheet and print configuration. From definitions/sheet_layouts.json.",
+          "properties": {
+            "titleblock_family": {"type": "string"},
+            "paper_size": {"type": "string"},
+            "paper_width_in": {"type": "number"},
+            "paper_height_in": {"type": "number"},
+            "print_settings": {
+              "type": "object",
+              "properties": {
+                "color_mode": {"type": "string", "enum": ["color", "grayscale", "black_and_white"]},
+                "hidden_line_views": {"type": "string", "enum": ["vector", "raster"]},
+                "raster_quality": {"type": "string", "enum": ["low", "medium", "high"]}
+              }
+            },
+            "viewport_positions": {
+              "type": "object",
+              "description": "Named layout presets with center coordinates in inches"
+            }
+          }
+        },
+
+        "graphic_styles": {
+          "type": "object",
+          "description": "Line weights, colors, fill patterns, and filter overrides. From definitions/graphic_styles.json.",
+          "properties": {
+            "line_weights": {
+              "type": "object",
+              "properties": {
+                "cut": {"type": "object"},
+                "projection": {"type": "object"}
+              }
+            },
+            "colors": {
+              "type": "object",
+              "description": "Named colors as [R, G, B] arrays",
+              "additionalProperties": {
+                "type": "array",
+                "items": {"type": "integer", "minimum": 0, "maximum": 255},
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "fill_patterns": {
+              "type": "object",
+              "description": "Material name to Revit fill pattern name mapping"
+            },
+            "filters": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {"type": "string"},
+                  "categories": {"type": "array", "items": {"type": "string"}},
+                  "rule": {"type": "string"},
+                  "override": {"type": "object"}
+                }
+              }
+            }
+          }
+        },
+
+        "naming_conventions": {
+          "type": "object",
+          "description": "Naming patterns for all Revit elements. From definitions/naming_conventions.json.",
+          "properties": {
+            "levels": {"type": "object"},
+            "grids": {"type": "object"},
+            "views": {"type": "object"},
+            "sheets": {"type": "object"},
+            "families": {"type": "object"},
+            "types": {"type": "object"}
+          }
+        },
+
+        "shared_parameters": {
+          "type": "array",
+          "description": "NGM custom parameters to bind to Revit categories. From definitions/shared_parameters.json.",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "categories"],
+            "properties": {
+              "name": {"type": "string"},
+              "type": {
+                "type": "string",
+                "enum": ["number", "text", "integer", "yes_no"]
+              },
+              "categories": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Revit OST_ category names to bind this parameter to"
+              },
+              "instance": {
+                "type": "boolean",
+                "default": false,
+                "description": "true = instance parameter, false = type parameter"
+              },
+              "description": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+
+    "families": {
+      "type": "array",
+      "description": "Families to download from vault and load into the Revit project. Only families this project needs.",
+      "items": {
+        "type": "object",
+        "required": ["name", "category"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Family name without .rfa extension (e.g., NGM_Door_Single)"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["structural", "architectural", "mep", "annotations"],
+            "description": "Vault subfolder category"
+          },
+          "types_to_activate": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Type names to activate after loading. Omit to activate all available types."
+          },
+          "vault_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Direct download URL for the .rfa file from the NGM vault"
+          },
+          "vault_path": {
+            "type": "string",
+            "description": "Relative path in local vault (fallback if URL unavailable). E.g., families/architectural/NGM_Door_Single.rfa"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["available", "planned", "deprecated"],
+            "default": "available",
+            "description": "Vault availability. Build Engine skips 'planned' families gracefully."
+          },
+          "file_hash": {
+            "type": "string",
+            "description": "SHA-256 of the .rfa file for integrity and cache validation"
+          }
+        }
+      }
+    },
+
+    "manifest": {
+      "type": "object",
+      "description": "Geometry and element placement data. Structure mirrors manifests/_schema.json. All coordinates and dimensions in decimal feet.",
+      "required": ["levels"],
+      "properties": {
+        "levels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "elevation_ft"],
+            "properties": {
+              "name": {"type": "string"},
+              "elevation_ft": {"type": "number", "description": "Elevation in decimal feet"}
+            }
+          }
+        },
+        "grids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "start", "end"],
+            "properties": {
+              "name": {"type": "string"},
+              "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+              "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"}
+            }
+          }
+        },
+        "walls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "level", "start", "end"],
+            "properties": {
+              "type": {"type": "string", "description": "Must match a name in definitions.wall_types[]"},
+              "level": {"type": "string", "description": "Must match a name in manifest.levels[]"},
+              "start": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+              "end": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+              "height_ft": {"type": "number", "description": "Wall height in feet. If omitted, uses level-to-level height."},
+              "structural": {"type": "boolean", "default": false}
+            }
+          }
+        },
+        "fixtures": {
+          "type": "array",
+          "description": "Doors, windows, MEP fixtures - any hosted or freestanding family instance",
+          "items": {
+            "type": "object",
+            "required": ["family", "point", "level"],
+            "properties": {
+              "family": {"type": "string", "description": "Must match a name in families[]"},
+              "type": {"type": "string", "description": "Type name within the family"},
+              "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 3, "description": "[x, y] or [x, y, z] in feet"},
+              "level": {"type": "string"},
+              "host_wall_index": {"type": "integer", "description": "Index of host wall in manifest.walls[] array (for doors/windows)"},
+              "rotation_deg": {"type": "number", "default": 0}
+            }
+          }
+        },
+        "floors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "level", "boundary"],
+            "properties": {
+              "type": {"type": "string", "description": "Must match a name in definitions.floor_types[]"},
+              "level": {"type": "string"},
+              "boundary": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {"type": "number"},
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "description": "Closed polygon of [x, y] points in decimal feet"
+              }
+            }
+          }
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["family", "point", "base_level", "top_level"],
+            "properties": {
+              "family": {"type": "string", "description": "Must match a name in families[]"},
+              "type": {"type": "string"},
+              "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] in feet"},
+              "base_level": {"type": "string"},
+              "top_level": {"type": "string"},
+              "rotation_deg": {"type": "number", "default": 0}
+            }
+          }
+        },
+        "beams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["family", "start", "end", "level"],
+            "properties": {
+              "family": {"type": "string", "description": "Must match a name in families[]"},
+              "type": {"type": "string"},
+              "start": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3, "description": "[x, y, z] in feet"},
+              "end": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3, "description": "[x, y, z] in feet"},
+              "level": {"type": "string"}
+            }
+          }
+        },
+        "rooms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "point", "level"],
+            "properties": {
+              "name": {"type": "string"},
+              "number": {"type": "string"},
+              "point": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2, "description": "[x, y] room placement point in feet"},
+              "level": {"type": "string"},
+              "floor_finish": {"type": "string"},
+              "wall_finish": {"type": "string"},
+              "ceiling_finish": {"type": "string"}
+            }
+          }
+        },
+        "views": {
+          "oneOf": [
+            {"type": "string", "enum": ["use_template_defaults"]},
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "type"],
+                "properties": {
+                  "name": {"type": "string"},
+                  "type": {"type": "string", "enum": ["floor_plan", "ceiling_plan", "section", "elevation", "3d"]},
+                  "level": {"type": "string", "description": "For plan views: which level"},
+                  "template": {"type": "string", "description": "View template name from definitions.view_templates[]"},
+                  "per_level": {"type": "boolean", "default": false, "description": "If true, create one view per level"}
+                }
+              }
+            }
+          ],
+          "default": "use_template_defaults"
+        },
+        "sheets": {
+          "oneOf": [
+            {"type": "string", "enum": ["use_template_defaults"]},
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["number", "title"],
+                "properties": {
+                  "number": {"type": "string"},
+                  "title": {"type": "string"},
+                  "discipline": {"type": "string"},
+                  "views": {"type": "array", "items": {"type": "string"}, "description": "View names to place on this sheet"},
+                  "layout": {"type": "string", "description": "Viewport layout preset from definitions.sheet_layout.viewport_positions"}
+                }
+              }
+            }
+          ],
+          "default": "use_template_defaults"
+        }
+      }
+    },
+
+    "materials": {
+      "type": "array",
+      "description": "Filtered material map. Only materials referenced by this project's definitions and geometry. From materials/material_map.json.",
+      "items": {
+        "type": "object",
+        "required": ["revit_name", "ngm_code"],
+        "properties": {
+          "revit_name": {
+            "type": "string",
+            "description": "Material name as used in Revit and in definition layers"
+          },
+          "ngm_code": {
+            "type": "string",
+            "description": "NGM catalog material code (e.g., CONC-001)"
+          },
+          "ngm_name": {
+            "type": "string",
+            "description": "Human-readable name in NGM catalog"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Measurement unit (sq ft, cu yd, lf, pcs, lbs, bf)"
+          },
+          "category": {
+            "type": "string",
+            "description": "Material category (Structural, Masonry, Finishes, etc.)"
+          }
+        }
+      }
+    }
+  }
+}

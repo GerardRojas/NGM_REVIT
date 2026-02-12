@@ -1,17 +1,27 @@
 {
   "_description": "NGM Revit ecosystem registry. Describes all scripts, families, and capabilities available. Read by NGM API to serve to the Project Builder web UI.",
   "version": "1.0",
+  "schemas": {
+    "manifest": {
+      "file": "manifests/_schema.json",
+      "description": "JSON Schema for the geometry build manifest (levels, grids, walls, fixtures, floors, columns, beams, rooms, views, sheets)"
+    },
+    "batch": {
+      "file": "manifests/_batch_schema.json",
+      "description": "JSON Schema for the complete build batch package (wraps definitions, families, materials, and manifest into a single contract)"
+    }
+  },
   "panels": {
     "build": {
       "label": "Build",
       "description": "Build Revit models from manifest configuration files",
       "scripts": [
         {
-          "id": "build_from_manifest",
-          "name": "Build From Manifest",
-          "description": "Reads a manifest JSON and builds the complete Revit model: levels, grids, wall types, walls, fixtures, floors, columns, beams, rooms",
-          "status": "planned",
-          "inputs": ["manifest.json"],
+          "id": "build_from_batch",
+          "name": "Build From Batch",
+          "description": "Reads a batch JSON and builds the complete Revit model. Creates levels, grids, wall/floor types from definitions, loads families, places walls, floors, columns, beams, fixtures, and rooms. Steps 13-19 (graphic styles, shared params, views, sheets, templates, naming, save) are stubbed for future implementation.",
+          "status": "ready",
+          "inputs": ["batch.json", "manifest.json"],
           "creates": ["levels", "grids", "wall_types", "walls", "fixtures", "floors", "columns", "beams", "rooms"]
         },
         {

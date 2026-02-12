@@ -130,10 +130,11 @@ NGM_REVIT/
   materials/
     material_map.json        # Revit material <-> NGM catalogo
 
-  # ── Build manifests (generados por web o manuales) ──
+  # ── Build manifests y batch (generados por web o manuales) ──
   manifests/
-    _schema.json             # Schema del build manifest
-    examples/                # Manifests de ejemplo para testing
+    _schema.json             # Schema del build manifest (solo geometria)
+    _batch_schema.json       # Schema del batch completo (definitions + families + manifest)
+    examples/                # Manifests y batches de ejemplo para testing
 
   # ── Archivos base de Revit (minimos) ──
   base/
@@ -260,6 +261,68 @@ Schema completo en `manifests/_schema.json`. Estructura:
 ```
 
 `views` y `sheets` pueden ser `"use_template_defaults"` (usa lo definido en `templates/residential.json`) o un array explicito de vistas/sheets custom.
+
+## Batch Schema
+
+El **batch** es un paquete completo de construccion ensamblado por el backend NGM y consumido por pyRevit Build Engine. Mientras el manifest contiene solo geometria, el batch envuelve todo lo necesario para construir un proyecto desde cero:
+
+```
+┌─────────────────────────────────────────────┐
+│  NGM Build Batch (.batch.json)              │
+│                                             │
+│  batch_meta    - version, id, timestamp,    │
+│                  quien lo genero, template   │
+│  project       - nombre, tipo, cliente      │
+│  definitions   - wall/floor types filtrados,│
+│                  view templates, styles,     │
+│                  naming, parameters          │
+│  families      - URLs de descarga + tipos   │
+│  manifest      - geometria (misma           │
+│                  estructura que _schema.json)│
+│  materials     - material map filtrado      │
+└─────────────────────────────────────────────┘
+```
+
+Schema: `manifests/_batch_schema.json`
+Ejemplos: `manifests/examples/*.batch.json`
+
+**Reglas clave:**
+- Un solo archivo JSON, no ZIP
+- Solo incluye definitions/families/materials que el proyecto especifico necesita (filtrado, no la libreria completa)
+- Todas las dimensiones en decimal feet (igual que manifest)
+- La seccion `manifest` dentro del batch sigue exactamente la misma estructura que `manifests/_schema.json`
+- `definitions.wall_types[].name` debe coincidir con `manifest.walls[].type`
+- `definitions.floor_types[].name` debe coincidir con `manifest.floors[].type`
+- `families[].name` debe coincidir con `manifest.fixtures[].family`, `manifest.columns[].family`, `manifest.beams[].family`
+- Familias con `"status": "planned"` son omitidas por el Build Engine sin error
+
+**Flujo web -> batch -> Revit:**
+1. Usuario en web selecciona: "ADU, 2 story, slab foundation"
+2. Backend filtra definitions, families, materials segun seleccion
+3. Backend genera manifest con geometria del configurador
+4. Backend empaqueta todo en un `.batch.json`
+5. Usuario descarga batch y lo abre en pyRevit Build Engine
+
+**Orden de ejecucion del Build Engine desde batch:**
+1. Leer y validar batch JSON
+2. Crear niveles desde `manifest.levels`
+3. Crear grids desde `manifest.grids`
+4. Crear wall types desde `definitions.wall_types`
+5. Crear floor types desde `definitions.floor_types`
+6. Descargar y cargar familias desde `families[]` (skip unavailable)
+7. Trazar muros desde `manifest.walls`
+8. Colocar pisos desde `manifest.floors`
+9. Colocar columnas desde `manifest.columns`
+10. Colocar vigas desde `manifest.beams`
+11. Insertar fixtures desde `manifest.fixtures`
+12. Colocar rooms desde `manifest.rooms`
+13. Aplicar graphic styles desde `definitions.graphic_styles`
+14. Vincular shared parameters desde `definitions.shared_parameters`
+15. Crear vistas (desde `manifest.views` o template defaults)
+16. Crear sheets (desde `manifest.sheets` o template defaults)
+17. Aplicar view templates desde `definitions.view_templates`
+18. Aplicar naming conventions desde `definitions.naming_conventions`
+19. SaveAs proyecto.rvt
 
 ## Revit API - Capacidades Clave
 

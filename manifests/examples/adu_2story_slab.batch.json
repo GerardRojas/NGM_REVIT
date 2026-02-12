@@ -1,0 +1,487 @@
+{
+  "batch_meta": {
+    "batch_version": "1.0.0",
+    "batch_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "created_at": "2026-02-11T14:30:00Z",
+    "created_by": "web_configurator",
+    "ngm_project_id": "proj-98765432-abcd-4def-0123-456789abcdef",
+    "ngm_user_id": "user-11223344-5566-4778-899a-bbccddeeff00",
+    "source_template": "residential"
+  },
+
+  "project": {
+    "project_name": "ADU Maple Street",
+    "project_type": "residential",
+    "project_number": "NGM-2026-0087",
+    "client_name": "Johnson Residence",
+    "address": "1234 Maple Street, Austin, TX 78701",
+    "description": "2-story ADU with slab foundation, 3 bed / 1.5 bath",
+    "units": "imperial"
+  },
+
+  "definitions": {
+    "wall_types": [
+      {
+        "name": "Ext - CMU 6\" + Plaster",
+        "function": "exterior",
+        "structural": false,
+        "total_width_ft": 0.6667,
+        "layers": [
+          {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+          {"function": "substrate", "material": "Concrete Masonry Units", "width_ft": 0.5},
+          {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
+        ]
+      },
+      {
+        "name": "Int - CMU 4\" + Plaster",
+        "function": "interior",
+        "structural": false,
+        "total_width_ft": 0.5,
+        "layers": [
+          {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833},
+          {"function": "substrate", "material": "Concrete Masonry Units", "width_ft": 0.3333},
+          {"function": "finish", "material": "Plaster - Cement", "width_ft": 0.0833}
+        ]
+      },
+      {
+        "name": "Int - Drywall 5\"",
+        "function": "interior",
+        "structural": false,
+        "total_width_ft": 0.4167,
+        "layers": [
+          {"function": "finish", "material": "Gypsum Wall Board", "width_ft": 0.0521},
+          {"function": "substrate", "material": "Metal Stud - 3 5/8\"", "width_ft": 0.3125},
+          {"function": "finish", "material": "Gypsum Wall Board", "width_ft": 0.0521}
+        ]
+      }
+    ],
+
+    "floor_types": [
+      {
+        "name": "SOG - Concrete 6\"",
+        "structural": true,
+        "total_thickness_ft": 0.5,
+        "layers": [
+          {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.5}
+        ]
+      },
+      {
+        "name": "Slab - Concrete 5\"",
+        "structural": true,
+        "total_thickness_ft": 0.4167,
+        "layers": [
+          {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.4167}
+        ]
+      },
+      {
+        "name": "Slab + Ceramic Tile",
+        "structural": true,
+        "total_thickness_ft": 0.4583,
+        "layers": [
+          {"function": "finish", "material": "Ceramic Tile", "width_ft": 0.0313},
+          {"function": "substrate", "material": "Mortar Bed", "width_ft": 0.0104},
+          {"function": "structure", "material": "Concrete - Cast In Place", "width_ft": 0.4167}
+        ]
+      }
+    ],
+
+    "view_templates": [
+      {
+        "name": "NGM - Architectural Plan",
+        "view_family": "floor_plan",
+        "scale": 100,
+        "detail_level": "medium",
+        "discipline": "architectural",
+        "category_visibility": {
+          "hide": ["OST_StructuralFraming", "OST_Rebar", "OST_MechanicalEquipment", "OST_PipeSegments", "OST_DuctSystem"],
+          "halftone": ["OST_StructuralColumns"]
+        },
+        "filters": []
+      },
+      {
+        "name": "NGM - Section",
+        "view_family": "section",
+        "scale": 50,
+        "detail_level": "fine",
+        "discipline": "architectural",
+        "category_visibility": {},
+        "filters": []
+      },
+      {
+        "name": "NGM - Elevation",
+        "view_family": "elevation",
+        "scale": 100,
+        "detail_level": "medium",
+        "discipline": "architectural",
+        "category_visibility": {},
+        "filters": []
+      }
+    ],
+
+    "sheet_layout": {
+      "titleblock_family": "NGM_Titleblock_ARCH-D",
+      "paper_size": "ARCH D",
+      "paper_width_in": 36,
+      "paper_height_in": 24,
+      "print_settings": {
+        "color_mode": "color",
+        "hidden_line_views": "vector",
+        "raster_quality": "high"
+      },
+      "viewport_positions": {
+        "single_view_centered": {"center_x_in": 17, "center_y_in": 13},
+        "two_views_horizontal": [
+          {"center_x_in": 10, "center_y_in": 13},
+          {"center_x_in": 26, "center_y_in": 13}
+        ],
+        "two_views_vertical": [
+          {"center_x_in": 17, "center_y_in": 18},
+          {"center_x_in": 17, "center_y_in": 8}
+        ],
+        "four_views": [
+          {"center_x_in": 10, "center_y_in": 18},
+          {"center_x_in": 26, "center_y_in": 18},
+          {"center_x_in": 10, "center_y_in": 8},
+          {"center_x_in": 26, "center_y_in": 8}
+        ]
+      }
+    },
+
+    "graphic_styles": {
+      "line_weights": {
+        "cut": {
+          "walls_exterior": 5,
+          "walls_interior": 3,
+          "floors": 4,
+          "columns": 5,
+          "doors": 2,
+          "windows": 2
+        },
+        "projection": {
+          "walls": 2,
+          "floors": 1,
+          "columns": 3,
+          "furniture": 1,
+          "annotations": 1
+        }
+      },
+      "colors": {
+        "structural_concrete": [180, 180, 180],
+        "masonry": [210, 180, 140],
+        "glass": [180, 220, 240],
+        "insulation": [255, 255, 200]
+      },
+      "fill_patterns": {
+        "concrete": "Concrete",
+        "masonry": "Masonry - Running Bond",
+        "gypsum": "Gypsum"
+      },
+      "filters": [
+        {
+          "name": "NGM - Exterior Walls",
+          "rule": "Wall Function equals Exterior",
+          "override": {"cut_line_weight": 5, "cut_line_color": [0, 0, 0]}
+        },
+        {
+          "name": "NGM - Non-structural Halftone",
+          "categories": ["OST_Furniture", "OST_Casework", "OST_Planting"],
+          "override": {"halftone": true}
+        }
+      ]
+    },
+
+    "naming_conventions": {
+      "levels": {
+        "pattern": "{prefix} - {name}",
+        "prefix_by_type": {
+          "foundation": "FDN",
+          "ground": "GF",
+          "upper": "L{n}",
+          "roof": "RF"
+        }
+      },
+      "grids": {
+        "horizontal": "Letters (A, B, C...)",
+        "vertical": "Numbers (1, 2, 3...)"
+      },
+      "views": {
+        "floor_plan": "{discipline}-{level_code} {level_name}",
+        "section": "{discipline}-SEC-{id} {description}",
+        "elevation": "{discipline}-ELV-{direction}",
+        "discipline_codes": {"architectural": "A", "structural": "S"}
+      },
+      "sheets": {
+        "pattern": "{discipline}{number} - {title}"
+      },
+      "families": {
+        "pattern": "NGM_{category}_{description}"
+      }
+    },
+
+    "shared_parameters": [
+      {
+        "name": "NGM_Cost_Per_Unit",
+        "type": "number",
+        "categories": ["OST_Walls", "OST_Floors", "OST_StructuralColumns", "OST_Doors", "OST_Windows"],
+        "instance": true,
+        "description": "Unit cost synced from NGM estimator"
+      },
+      {
+        "name": "NGM_Material_Code",
+        "type": "text",
+        "categories": ["OST_Walls", "OST_Floors", "OST_StructuralColumns"],
+        "instance": false,
+        "description": "NGM catalog material code"
+      },
+      {
+        "name": "NGM_Concept_ID",
+        "type": "text",
+        "categories": ["OST_Walls", "OST_Floors", "OST_StructuralColumns", "OST_Doors", "OST_Windows"],
+        "instance": false,
+        "description": "UUID of estimator concept for bidirectional sync"
+      }
+    ]
+  },
+
+  "families": [
+    {
+      "name": "NGM_Column_Rectangular",
+      "category": "structural",
+      "types_to_activate": ["12x12 in"],
+      "vault_url": "https://vault.ngm.com/families/structural/NGM_Column_Rectangular.rfa",
+      "vault_path": "families/structural/NGM_Column_Rectangular.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Beam_Rectangular",
+      "category": "structural",
+      "types_to_activate": ["8x16 in"],
+      "vault_url": "https://vault.ngm.com/families/structural/NGM_Beam_Rectangular.rfa",
+      "vault_path": "families/structural/NGM_Beam_Rectangular.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Foundation_Strip",
+      "category": "structural",
+      "types_to_activate": ["12x24 in"],
+      "vault_url": "https://vault.ngm.com/families/structural/NGM_Foundation_Strip.rfa",
+      "vault_path": "families/structural/NGM_Foundation_Strip.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Door_Single",
+      "category": "architectural",
+      "types_to_activate": ["2'-8\" x 7'-0\"", "3'-0\" x 7'-0\""],
+      "vault_url": "https://vault.ngm.com/families/architectural/NGM_Door_Single.rfa",
+      "vault_path": "families/architectural/NGM_Door_Single.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Window_Sliding",
+      "category": "architectural",
+      "types_to_activate": ["4'-0\" x 4'-0\"", "5'-0\" x 4'-0\""],
+      "vault_url": "https://vault.ngm.com/families/architectural/NGM_Window_Sliding.rfa",
+      "vault_path": "families/architectural/NGM_Window_Sliding.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Window_Fixed",
+      "category": "architectural",
+      "types_to_activate": ["3'-0\" x 4'-0\""],
+      "vault_url": "https://vault.ngm.com/families/architectural/NGM_Window_Fixed.rfa",
+      "vault_path": "families/architectural/NGM_Window_Fixed.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Stair_Standard",
+      "category": "architectural",
+      "types_to_activate": ["3'-6\" wide"],
+      "vault_url": "https://vault.ngm.com/families/architectural/NGM_Stair_Standard.rfa",
+      "vault_path": "families/architectural/NGM_Stair_Standard.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Plumbing_Toilet",
+      "category": "mep",
+      "types_to_activate": ["Floor Mount"],
+      "vault_url": "https://vault.ngm.com/families/mep/NGM_Plumbing_Toilet.rfa",
+      "vault_path": "families/mep/NGM_Plumbing_Toilet.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Plumbing_Sink",
+      "category": "mep",
+      "types_to_activate": ["Single Bowl"],
+      "vault_url": "https://vault.ngm.com/families/mep/NGM_Plumbing_Sink.rfa",
+      "vault_path": "families/mep/NGM_Plumbing_Sink.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Plumbing_Shower",
+      "category": "mep",
+      "types_to_activate": ["36x36 in"],
+      "vault_url": "https://vault.ngm.com/families/mep/NGM_Plumbing_Shower.rfa",
+      "vault_path": "families/mep/NGM_Plumbing_Shower.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Outlet_Standard",
+      "category": "mep",
+      "types_to_activate": ["Duplex 120V"],
+      "vault_url": "https://vault.ngm.com/families/mep/NGM_Outlet_Standard.rfa",
+      "vault_path": "families/mep/NGM_Outlet_Standard.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Light_Ceiling",
+      "category": "mep",
+      "types_to_activate": ["Flush Mount"],
+      "vault_url": "https://vault.ngm.com/families/mep/NGM_Light_Ceiling.rfa",
+      "vault_path": "families/mep/NGM_Light_Ceiling.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Titleblock_ARCH-D",
+      "category": "annotations",
+      "types_to_activate": ["Standard"],
+      "vault_url": "https://vault.ngm.com/families/annotations/NGM_Titleblock_ARCH-D.rfa",
+      "vault_path": "families/annotations/NGM_Titleblock_ARCH-D.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Tag_Room",
+      "category": "annotations",
+      "types_to_activate": ["Standard"],
+      "vault_url": "https://vault.ngm.com/families/annotations/NGM_Tag_Room.rfa",
+      "vault_path": "families/annotations/NGM_Tag_Room.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Tag_Door",
+      "category": "annotations",
+      "types_to_activate": ["Standard"],
+      "vault_url": "https://vault.ngm.com/families/annotations/NGM_Tag_Door.rfa",
+      "vault_path": "families/annotations/NGM_Tag_Door.rfa",
+      "status": "planned"
+    },
+    {
+      "name": "NGM_Tag_Window",
+      "category": "annotations",
+      "types_to_activate": ["Standard"],
+      "vault_url": "https://vault.ngm.com/families/annotations/NGM_Tag_Window.rfa",
+      "vault_path": "families/annotations/NGM_Tag_Window.rfa",
+      "status": "planned"
+    }
+  ],
+
+  "manifest": {
+    "levels": [
+      {"name": "Foundation", "elevation_ft": -0.5},
+      {"name": "Ground Floor", "elevation_ft": 0.0},
+      {"name": "Second Floor", "elevation_ft": 9.1875},
+      {"name": "Roof", "elevation_ft": 18.375}
+    ],
+    "grids": [
+      {"name": "A", "start": [0, 0], "end": [0, 24.0]},
+      {"name": "B", "start": [10.0, 0], "end": [10.0, 24.0]},
+      {"name": "C", "start": [20.0, 0], "end": [20.0, 24.0]},
+      {"name": "1", "start": [0, 0], "end": [20.0, 0]},
+      {"name": "2", "start": [0, 12.0], "end": [20.0, 12.0]},
+      {"name": "3", "start": [0, 24.0], "end": [20.0, 24.0]}
+    ],
+    "walls": [
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Ground Floor", "start": [0, 0], "end": [20.0, 0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Ground Floor", "start": [20.0, 0], "end": [20.0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Ground Floor", "start": [20.0, 24.0], "end": [0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Ground Floor", "start": [0, 24.0], "end": [0, 0], "height_ft": 9.1875, "structural": false},
+      {"type": "Int - CMU 4\" + Plaster", "level": "Ground Floor", "start": [10.0, 0], "end": [10.0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Int - Drywall 5\"", "level": "Ground Floor", "start": [0, 12.0], "end": [10.0, 12.0], "height_ft": 9.1875, "structural": false},
+
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Second Floor", "start": [0, 0], "end": [20.0, 0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Second Floor", "start": [20.0, 0], "end": [20.0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Second Floor", "start": [20.0, 24.0], "end": [0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Ext - CMU 6\" + Plaster", "level": "Second Floor", "start": [0, 24.0], "end": [0, 0], "height_ft": 9.1875, "structural": false},
+      {"type": "Int - CMU 4\" + Plaster", "level": "Second Floor", "start": [10.0, 0], "end": [10.0, 24.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Int - Drywall 5\"", "level": "Second Floor", "start": [0, 12.0], "end": [10.0, 12.0], "height_ft": 9.1875, "structural": false},
+      {"type": "Int - Drywall 5\"", "level": "Second Floor", "start": [10.0, 16.0], "end": [20.0, 16.0], "height_ft": 9.1875, "structural": false}
+    ],
+    "fixtures": [
+      {"family": "NGM_Door_Single", "type": "3'-0\" x 7'-0\"", "point": [5.0, 0], "level": "Ground Floor", "host_wall_index": 0},
+      {"family": "NGM_Door_Single", "type": "2'-8\" x 7'-0\"", "point": [10.0, 6.0], "level": "Ground Floor", "host_wall_index": 4},
+      {"family": "NGM_Door_Single", "type": "2'-8\" x 7'-0\"", "point": [5.0, 12.0], "level": "Ground Floor", "host_wall_index": 5},
+      {"family": "NGM_Window_Sliding", "type": "5'-0\" x 4'-0\"", "point": [14.0, 0, 3.0], "level": "Ground Floor", "host_wall_index": 0},
+      {"family": "NGM_Window_Fixed", "type": "3'-0\" x 4'-0\"", "point": [20.0, 6.0, 3.0], "level": "Ground Floor", "host_wall_index": 1},
+      {"family": "NGM_Window_Fixed", "type": "3'-0\" x 4'-0\"", "point": [20.0, 18.0, 3.0], "level": "Ground Floor", "host_wall_index": 1},
+      {"family": "NGM_Plumbing_Toilet", "type": "Floor Mount", "point": [3.0, 14.0], "level": "Ground Floor"},
+      {"family": "NGM_Plumbing_Sink", "type": "Single Bowl", "point": [1.5, 14.0, 3.0], "level": "Ground Floor"},
+
+      {"family": "NGM_Door_Single", "type": "3'-0\" x 7'-0\"", "point": [10.0, 6.0], "level": "Second Floor", "host_wall_index": 10},
+      {"family": "NGM_Door_Single", "type": "2'-8\" x 7'-0\"", "point": [5.0, 12.0], "level": "Second Floor", "host_wall_index": 11},
+      {"family": "NGM_Door_Single", "type": "2'-8\" x 7'-0\"", "point": [14.0, 16.0], "level": "Second Floor", "host_wall_index": 12},
+      {"family": "NGM_Window_Sliding", "type": "4'-0\" x 4'-0\"", "point": [5.0, 0, 3.0], "level": "Second Floor", "host_wall_index": 6},
+      {"family": "NGM_Window_Sliding", "type": "4'-0\" x 4'-0\"", "point": [15.0, 0, 3.0], "level": "Second Floor", "host_wall_index": 6},
+      {"family": "NGM_Window_Sliding", "type": "4'-0\" x 4'-0\"", "point": [20.0, 6.0, 3.0], "level": "Second Floor", "host_wall_index": 7},
+      {"family": "NGM_Window_Sliding", "type": "4'-0\" x 4'-0\"", "point": [20.0, 20.0, 3.0], "level": "Second Floor", "host_wall_index": 7},
+      {"family": "NGM_Plumbing_Toilet", "type": "Floor Mount", "point": [3.0, 14.0], "level": "Second Floor"},
+      {"family": "NGM_Plumbing_Sink", "type": "Single Bowl", "point": [1.5, 14.0, 3.0], "level": "Second Floor"},
+      {"family": "NGM_Plumbing_Shower", "type": "36x36 in", "point": [7.0, 14.0], "level": "Second Floor"}
+    ],
+    "floors": [
+      {"type": "SOG - Concrete 6\"", "level": "Foundation", "boundary": [[0, 0], [20.0, 0], [20.0, 24.0], [0, 24.0]]},
+      {"type": "Slab + Ceramic Tile", "level": "Ground Floor", "boundary": [[0, 0], [20.0, 0], [20.0, 24.0], [0, 24.0]]},
+      {"type": "Slab + Ceramic Tile", "level": "Second Floor", "boundary": [[0, 0], [20.0, 0], [20.0, 24.0], [0, 24.0]]},
+      {"type": "Slab - Concrete 5\"", "level": "Roof", "boundary": [[0, 0], [20.0, 0], [20.0, 24.0], [0, 24.0]]}
+    ],
+    "columns": [
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [0, 0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [10.0, 0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [20.0, 0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [0, 12.0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [10.0, 12.0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [20.0, 12.0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [0, 24.0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [10.0, 24.0], "base_level": "Foundation", "top_level": "Roof"},
+      {"family": "NGM_Column_Rectangular", "type": "12x12 in", "point": [20.0, 24.0], "base_level": "Foundation", "top_level": "Roof"}
+    ],
+    "beams": [
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 0, 9.1875], "end": [10.0, 0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 0, 9.1875], "end": [20.0, 0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 12.0, 9.1875], "end": [10.0, 12.0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 12.0, 9.1875], "end": [20.0, 12.0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 24.0, 9.1875], "end": [10.0, 24.0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 24.0, 9.1875], "end": [20.0, 24.0, 9.1875], "level": "Second Floor"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 0, 18.375], "end": [10.0, 0, 18.375], "level": "Roof"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 0, 18.375], "end": [20.0, 0, 18.375], "level": "Roof"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 12.0, 18.375], "end": [10.0, 12.0, 18.375], "level": "Roof"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 12.0, 18.375], "end": [20.0, 12.0, 18.375], "level": "Roof"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [0, 24.0, 18.375], "end": [10.0, 24.0, 18.375], "level": "Roof"},
+      {"family": "NGM_Beam_Rectangular", "type": "8x16 in", "start": [10.0, 24.0, 18.375], "end": [20.0, 24.0, 18.375], "level": "Roof"}
+    ],
+    "rooms": [
+      {"name": "Living Room", "number": "101", "point": [5.0, 6.0], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Kitchen", "number": "102", "point": [15.0, 6.0], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Ceramic Tile", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Half Bath", "number": "103", "point": [5.0, 15.0], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Ceramic Tile", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Laundry", "number": "104", "point": [15.0, 18.0], "level": "Ground Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Master Bedroom", "number": "201", "point": [5.0, 6.0], "level": "Second Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Bedroom 2", "number": "202", "point": [15.0, 6.0], "level": "Second Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Bedroom 3", "number": "203", "point": [15.0, 20.0], "level": "Second Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Full Bath", "number": "204", "point": [5.0, 15.0], "level": "Second Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Ceramic Tile", "ceiling_finish": "Plaster + Paint"},
+      {"name": "Hall", "number": "205", "point": [10.0, 18.0], "level": "Second Floor", "floor_finish": "Ceramic Tile", "wall_finish": "Plaster + Paint", "ceiling_finish": "Plaster + Paint"}
+    ],
+    "views": "use_template_defaults",
+    "sheets": "use_template_defaults"
+  },
+
+  "materials": [
+    {"revit_name": "Concrete - Cast In Place", "ngm_code": "CONC-001", "ngm_name": "Cast-in-Place Concrete 4000 psi", "unit": "cu yd", "category": "Structural"},
+    {"revit_name": "Concrete Masonry Units", "ngm_code": "CMU-001", "ngm_name": "CMU Block 6x8x16", "unit": "pcs", "category": "Masonry"},
+    {"revit_name": "Plaster - Cement", "ngm_code": "FIN-001", "ngm_name": "Cement Plaster", "unit": "sq ft", "category": "Finishes"},
+    {"revit_name": "Gypsum Wall Board", "ngm_code": "GWB-001", "ngm_name": "Gypsum Board 1/2\"", "unit": "sq ft", "category": "Finishes"},
+    {"revit_name": "Metal Stud - 3 5/8\"", "ngm_code": "UNMAPPED", "ngm_name": "Metal Stud Framing", "unit": "lf", "category": "Framing"},
+    {"revit_name": "Ceramic Tile", "ngm_code": "FIN-002", "ngm_name": "Ceramic Floor Tile", "unit": "sq ft", "category": "Finishes"},
+    {"revit_name": "Mortar Bed", "ngm_code": "UNMAPPED", "ngm_name": "Mortar Bed", "unit": "sq ft", "category": "Finishes"},
+    {"revit_name": "Paint - Interior", "ngm_code": "PNT-001", "ngm_name": "Interior Latex Paint", "unit": "sq ft", "category": "Finishes"},
+    {"revit_name": "Glass - Clear", "ngm_code": "GLS-001", "ngm_name": "Clear Glass 1/4\"", "unit": "sq ft", "category": "Openings"},
+    {"revit_name": "Metal - Aluminum", "ngm_code": "ALM-001", "ngm_name": "Aluminum Window Frame", "unit": "sq ft", "category": "Openings"}
+  ]
+}
