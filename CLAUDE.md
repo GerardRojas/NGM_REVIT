@@ -95,6 +95,7 @@ AHORA: base.rvt 3MB + codigo en GitHub → build → modelo consistente siempre
 - **Revit API** - Accesible via `clr` y namespaces de Autodesk (.NET)
 - **.NET interop** - HTTP via `System.Net.WebClient` (no `requests`)
 - **Revit 2024+** - Version minima target
+- **MCP Bridge** - C# add-in (.NET 4.8) + Python MCP server para AI copilot
 
 ## Estructura del Proyecto
 ```
@@ -141,6 +142,23 @@ NGM_REVIT/
 
   # ── Salida ──
   exports/                   # JSONs generados por Export Suite
+
+  # ── MCP Bridge (AI Copilot) ──
+  mcp/
+    server/                          # Python CPython 3.11+ MCP server
+      server.py                      # 15 MCP tools for Claude
+      revit_client.py                # HTTP client -> bridge
+      requirements.txt               # mcp, httpx
+    bridge/                          # C# .NET 4.8 Revit add-in
+      RevitBridge.sln
+      RevitBridge/
+        App.cs                       # IExternalApplication entry
+        HttpServer.cs                # localhost:8080 listener
+        RevitCommandHandler.cs       # ExternalEvent thread safety
+        Commands/CommandRouter.cs    # Revit API command handlers
+        RevitBridge.addin            # Manifest for Revit
+    docs/setup.md                    # Installation guide
+    claude_desktop_config.json       # Config for Claude Desktop
 
   # ── Extension pyRevit ──
   NGM.extension/
@@ -363,4 +381,31 @@ Schema completo en `manifests/_schema.json`. Estructura:
 4. **Fase 4 - Vault**: Libreria de familias estandarizadas
 5. **Fase 5 - Drawing Package**: Sheets, views, PDF export automatizado
 6. **Fase 6 - Web Integration**: OCR tool + Plan Configurator en NGM HUB
-7. **Fase 7 - AI Agents**: Conexion con Andrew/Daneel para validacion BIM-vs-gastos
+7. **Fase 7 - MCP Bridge**: AI copilot via Claude MCP (IN PROGRESS - mcp/ folder)
+8. **Fase 8 - AI Agents**: Conexion con Andrew/Daneel para validacion BIM-vs-gastos
+
+## MCP Bridge Architecture
+
+```
+[Claude Desktop / MCP Client]
+        |  MCP Protocol (stdio)
+        v
+[mcp/server/]  Python 3.11+ (CPython)
+   - Implements MCP protocol via `mcp` SDK
+   - 15 tools: query, modify, export, sync
+   - Translates tool calls into HTTP requests
+        |  HTTP localhost:8080
+        v
+[mcp/bridge/]  C# .NET 4.8 Revit Add-in
+   - IExternalApplication loaded by Revit
+   - HttpListener on port 8080
+   - ExternalEvent pattern for thread safety
+   - CommandRouter dispatches to Revit API
+        |  Revit API
+        v
+[Revit Model (.rvt)]
+```
+
+Two processes because: MCP SDK is Python-native (Claude spawns it via stdio),
+but Revit API is .NET-only and single-threaded (must be in-process DLL).
+HTTP on localhost bridges them with zero network exposure.
