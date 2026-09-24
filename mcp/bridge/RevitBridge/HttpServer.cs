@@ -15,7 +15,16 @@ namespace NGM.RevitBridge
     /// Receives JSON commands from the MCP server and dispatches them
     /// to the RevitCommandHandler via ExternalEvent for thread-safe execution.
     ///
-    /// Only listens on localhost - no external network exposure.
+    /// Only listens on localhost - no external network exposure. That claim was
+    /// false while this server sent `Access-Control-Allow-Origin: *`: the bind was
+    /// loopback, but the wildcard made every browser tab on the machine an
+    /// authorised client of an endpoint that writes to the model. The CORS headers
+    /// are gone.
+    ///
+    /// Still unauthenticated: any process on this machine can POST /command. That
+    /// is acceptable for a local tool and NOT acceptable for one that can write
+    /// geometry -- decide whether create_wall and set_parameter belong here before
+    /// anyone builds and installs this.
     /// </summary>
     public class HttpServer
     {
@@ -78,14 +87,19 @@ namespace NGM.RevitBridge
 
             try
             {
-                // CORS headers for local development
-                response.Headers.Add("Access-Control-Allow-Origin", "*");
-                response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
-
+                // NO CORS headers, on purpose.
+                //
+                // This used to answer `Access-Control-Allow-Origin: *` and to
+                // approve POST in the preflight. Binding to localhost is not a
+                // boundary when you do that: any page open in a browser on this
+                // machine could POST /command and run create_wall or
+                // set_parameter against the open model -- no token, no prompt,
+                // no trace. The listener is for the local MCP server, which is
+                // not a browser and does not need CORS. An OPTIONS request is
+                // refused rather than approved.
                 if (request.HttpMethod == "OPTIONS")
                 {
-                    response.StatusCode = 200;
+                    response.StatusCode = 405;
                     response.Close();
                     return;
                 }
